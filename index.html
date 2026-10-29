@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OilCraft — Essential Oil Blend, Dilution &amp; Collection Companion</title>
+<style>
+:root{
+  --bg:#faf5ef; --card:#ffffff; --ink:#3e3238; --muted:#8a7a80;
+  --rose:#a1557a; --rose-dark:#834264; --sage:#75875a; --sage-soft:#eef2e6;
+  --cream:#f5ead9; --line:#e8ddd2; --warn:#b3261e; --warnbg:#fdecea;
+  --ok:#3d7a44; --okbg:#eaf5ec; --amber:#9a6a12; --amberbg:#fdf3d7;
+  --radius:14px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.45}
+header{background:linear-gradient(135deg,#a1557a,#75875a);color:#fff;padding:22px 16px 16px;text-align:center}
+header h1{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:30px;font-weight:600;letter-spacing:.5px}
+header p{margin:6px auto 0;max-width:640px;font-size:14px;opacity:.94}
+.disclaimer-strip{background:#fff4e0;color:#6b5510;font-size:12.5px;text-align:center;padding:8px 12px;border-bottom:1px solid var(--line)}
+.wrap{max-width:980px;margin:0 auto;padding:14px 12px 60px}
+nav.tabs{display:flex;gap:6px;overflow-x:auto;padding:10px 2px;position:sticky;top:0;background:var(--bg);z-index:5;-webkit-overflow-scrolling:touch}
+nav.tabs button{flex:0 0 auto;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:10px 14px;border-radius:999px;font-size:14.5px;cursor:pointer;min-height:44px}
+nav.tabs button.active{background:var(--rose);border-color:var(--rose);color:#fff;font-weight:600}
+section.tab{display:none}
+section.tab.active{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin:12px 0;box-shadow:0 1px 3px rgba(90,60,40,.05)}
+.card h2{margin:0 0 8px;font-family:Georgia,serif;font-size:21px;color:var(--rose-dark)}
+.card h3{margin:14px 0 6px;font-size:16px;color:var(--rose-dark)}
+label{display:block;font-size:13px;font-weight:600;color:var(--muted);margin:10px 0 4px}
+input,select,textarea{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;font-size:16px;background:#fff;color:var(--ink);min-height:46px}
+textarea{min-height:80px;resize:vertical}
+button.btn{background:var(--rose);color:#fff;border:none;border-radius:10px;padding:12px 18px;font-size:15.5px;cursor:pointer;min-height:46px;font-weight:600}
+button.btn:hover{background:var(--rose-dark)}
+button.btn.secondary{background:#fff;color:var(--rose);border:1.5px solid var(--rose)}
+button.btn.sage{background:var(--sage)}
+button.btn.small{padding:8px 12px;font-size:14px;min-height:40px}
+button.btn.danger{background:var(--warn)}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.row>*{flex:1 1 140px}
+.presets{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 2px}
+.presets button{flex:1 1 100px;border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:10px 8px;cursor:pointer;font-size:13.5px;min-height:52px;color:var(--ink)}
+.presets button.active{border-color:var(--rose);background:#f9eef3;font-weight:700}
+.presets button small{display:block;color:var(--muted);font-weight:400}
+.big-out{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.big-out .stat{flex:1 1 130px;background:var(--sage-soft);border-radius:12px;padding:12px;text-align:center}
+.big-out .stat .num{font-size:27px;font-weight:700;color:var(--rose-dark)}
+.big-out .stat .lbl{font-size:12.5px;color:var(--muted)}
+.note{font-size:13.5px;color:#5c4c52}
+.safety{background:#fff8e6;border:1px solid #eed9a0;border-radius:10px;padding:12px 14px;font-size:13.5px;margin-top:12px}
+.safety b{color:#6b5510}
+.warnbox{background:var(--warnbg);border:1px solid #f0b8b2;color:var(--warn);border-radius:10px;padding:12px 14px;font-size:14.5px;font-weight:600;margin-top:10px}
+.okbox{background:var(--okbg);border:1px solid #bfe0c5;color:var(--ok);border-radius:10px;padding:10px 14px;font-size:14px;margin-top:10px}
+table{width:100%;border-collapse:collapse;font-size:14.5px}
+th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-size:12.5px;text-transform:uppercase;letter-spacing:.4px}
+.chip{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:700}
+.chip.fresh{background:var(--okbg);color:var(--ok)}
+.chip.soon{background:var(--amberbg);color:var(--amber)}
+.chip.past{background:var(--warnbg);color:var(--warn)}
+.chip.cat{background:var(--cream);color:#7a5b16}
+.chip.flag{background:#f9eef3;color:var(--rose-dark)}
+.recipe{border:1px solid var(--line);border-radius:12px;padding:13px 14px;margin:10px 0;background:#fff}
+.recipe h3{margin:0 0 2px;font-size:17px;color:var(--ink)}
+.recipe .meta{font-size:13px;color:var(--muted)}
+.recipe .detail{display:none;margin-top:10px;border-top:1px dashed var(--line);padding-top:10px}
+.recipe.open .detail{display:block}
+.icon-btn{background:none;border:none;font-size:19px;cursor:pointer;padding:6px;min-height:40px;min-width:40px}
+.oilcard{border:1px solid var(--line);border-radius:12px;padding:13px 14px;margin:10px 0;background:#fff}
+.oilcard h3{margin:0;font-size:17px;color:var(--ink)}
+.oilcard .scent{font-style:italic;color:#5c4c52;font-size:14px}
+.flagline{font-size:13px;margin:4px 0}
+.flagline b{color:var(--rose-dark)}
+.kpis{display:flex;gap:10px;flex-wrap:wrap}
+.kpis .stat{flex:1 1 120px;background:var(--cream);border-radius:12px;padding:12px;text-align:center}
+.kpis .stat .num{font-size:24px;font-weight:700;color:var(--rose-dark)}
+.kpis .stat .lbl{font-size:12.5px;color:var(--muted)}
+.line-row{display:flex;gap:8px;margin:6px 0}
+.line-row .oil-in{flex:3}
+.line-row .drops-in{flex:1}
+.line-row button{flex:0 0 auto}
+#toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(90px);background:#333;color:#fff;padding:12px 20px;border-radius:999px;font-size:15px;z-index:50;transition:transform .25s;max-width:92vw;text-align:center}
+#toast.show{transform:translateX(-50%) translateY(0)}
+.modal{position:fixed;inset:0;background:rgba(40,25,30,.5);display:none;z-index:40;padding:16px}
+.modal.open{display:flex;align-items:flex-start;justify-content:center}
+.modal .box{background:#fff;border-radius:14px;padding:18px;max-width:640px;width:100%;max-height:88vh;overflow:auto}
+.empty{color:var(--muted);font-size:14.5px;padding:10px 0}
+.small{font-size:12.5px;color:var(--muted)}
+a{color:var(--rose-dark)}
+#printArea{display:none}
+@media print{
+  body>*{display:none !important}
+  #printArea{display:block !important;font-family:Georgia,serif;color:#000;padding:10px}
+  #printArea h2{margin-bottom:2px}
+  #printArea table{font-size:13px}
+}
+@media (max-width:480px){
+  header h1{font-size:24px}
+  .big-out .stat .num{font-size:23px}
+  th,td{padding:7px 4px;font-size:13.5px}
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>🌿 OilCraft</h1>
+  <p>Your essential oil blending companion — safe dilution math, a recipe library sized to any bottle, and your whole collection (with shelf life) in one place. Brand-neutral, works offline, no account.</p>
+</header>
+<div class="disclaimer-strip">OilCraft is a blending &amp; record-keeping tool, not medical advice. Recipes are aromatic blends — nothing here diagnoses, treats, or cures anything. Always dilute, patch test, and ask a qualified professional about pregnancy, babies, medications, or health conditions.</div>
+
+<div class="wrap">
+<nav class="tabs" id="tabBar">
+  <button data-tab="dilute" class="active">💧 Dilution</button>
+  <button data-tab="blends">📖 Blend Library</button>
+  <button data-tab="create">✨ My Blends</button>
+  <button data-tab="collection">🧴 My Collection</button>
+  <button data-tab="oils">🌸 Oil Guide</button>
+  <button data-tab="help">❓ Help &amp; Safety</button>
+  <button data-tab="settings">⚙️ Settings</button>
+</nav>
+
+<!-- ============ DILUTION ============ -->
+<section class="tab active" id="tab-dilute">
+  <div class="card">
+    <h2>Dilution Calculator</h2>
+    <p class="note">Pick your bottle and who the blend is for — OilCraft does the drops math using <b id="dcDpmEcho">20 drops per ml</b> (change it in Settings; drop size varies by oil and dropper).</p>
+    <label for="dcSize">Container size</label>
+    <select id="dcSize">
+      <option value="5">5 ml bottle</option>
+      <option value="10" selected>10 ml roller bottle</option>
+      <option value="15">15 ml bottle</option>
+      <option value="30">30 ml / 1 oz bottle</option>
+      <option value="60">2 oz (60 ml) bottle</option>
+      <option value="120">4 oz (120 ml) bottle</option>
+      <option value="custom">Custom size…</option>
+    </select>
+    <div id="dcCustomWrap" style="display:none">
+      <label for="dcCustomMl">Custom size (ml)</label>
+      <input inputmode="decimal" type="number" id="dcCustomMl" min="0" step="any" placeholder="e.g. 50">
+    </div>
+    <label>Who is it for? (sets a safe strength)</label>
+    <div class="presets" id="dcPresets">
+      <button type="button" data-pct="0.5">0.5%<small>Young kids 3 mo–6 yr · cautious</small></button>
+      <button type="button" data-pct="1">1%<small>Kids 6+ · face · daily use</small></button>
+      <button type="button" data-pct="2" class="active">2%<small>Adults · standard body</small></button>
+      <button type="button" data-pct="3">3%<small>Adults · short-term targeted</small></button>
+      <button type="button" data-pct="5">5%<small>Adults · strong, short-term</small></button>
+    </div>
+    <label for="dcPct">Dilution % (adjust if you like)</label>
+    <input inputmode="decimal" type="number" id="dcPct" min="0" max="100" step="0.1" value="2">
+    <div class="big-out">
+      <div class="stat"><div class="num" id="dcDrops">—</div><div class="lbl">drops of essential oil (total)</div></div>
+      <div class="stat"><div class="num" id="dcEoMl">—</div><div class="lbl">essential oil (ml)</div></div>
+      <div class="stat"><div class="num" id="dcCarrier">—</div><div class="lbl">carrier oil to add (ml)</div></div>
+      <div class="stat"><div class="num" id="dcCarrierTsp">—</div><div class="lbl">carrier ≈ teaspoons</div></div>
+    </div>
+    <div class="safety">
+      <b>Safe-blending basics:</b> always patch test a small area first and wait 24 hours. Never put oils in eyes or ears. OilCraft does not give ingestion advice — don't swallow essential oils based on anything in this app. If you're pregnant, nursing, making blends for babies under 2, or anyone takes medication, check with a qualified professional first. Phototoxic citrus (bergamot, lemon, lime) + sun on skin don't mix — see the Oil Guide flags.
+    </div>
+  </div>
+  <div class="card">
+    <h3>Quick chart (at your current drops/ml)</h3>
+    <p class="note">Drops of essential oil per bottle size. Handy at the blending table.</p>
+    <div id="dcChart"></div>
+  </div>
+</section>
+
+<!-- ============ BLEND LIBRARY ============ -->
+<section class="tab" id="tab-blends">
+  <div class="card">
+    <h2>Blend Library</h2>
+    <p class="note">33 aromatic blends — sleep, mood, focus, seasonal breathing, skin, hair, perfume rollers, home &amp; cleaning, and bath. Open any blend to resize it to your bottle, check its dilution, print a blend card, or add the oils you're missing to your shopping list.</p>
+    <div class="row">
+      <div><label for="blendSearch">Search</label><input type="text" id="blendSearch" placeholder="sleep, citrus, cleaning…"></div>
+      <div><label for="blendCat">Category</label><select id="blendCat"></select></div>
+    </div>
+    <label style="display:flex;align-items:center;gap:8px;font-size:14.5px;color:var(--ink)"><input type="checkbox" id="favOnly" style="width:22px;height:22px;min-height:0"> Show favorites only ♥</label>
+    <div id="recipeList"></div>
+  </div>
+</section>
+
+<!-- ============ MY BLENDS / BUILDER ============ -->
+<section class="tab" id="tab-create">
+  <div class="card">
+    <h2 id="builderTitle">Blend Builder</h2>
+    <p class="note">Create your own blend and watch the dilution live. If it goes over the recommended strength for who it's for, OilCraft warns you before you save.</p>
+    <label for="bName">Blend name</label>
+    <input type="text" id="bName" placeholder="e.g. My Morning Roller">
+    <div class="row">
+      <div><label for="bCat">Category</label>
+        <select id="bCat">
+          <option>Sleep</option><option>Mood</option><option>Focus</option><option>Seasonal Breathing</option>
+          <option>Skin &amp; Beauty</option><option>Hair</option><option>Roller Perfume</option>
+          <option>Home &amp; Cleaning</option><option>Bath</option><option>Other</option>
+        </select></div>
+      <div><label for="bFormat">Type</label>
+        <select id="bFormat">
+          <option value="roller">Roller / bottle blend (in carrier)</option>
+          <option value="spray">Spray (in water/base)</option>
+          <option value="diffuser">Diffuser blend (neat drops)</option>
+          <option value="bath">Bath blend (into a dispersant first)</option>
+          <option value="drops">Drops used as-is (dryer balls, inhaler)</option>
+        </select></div>
+    </div>
+    <div class="row">
+      <div id="bContainerWrap"><label for="bContainer">Container size (ml)</label>
+        <select id="bContainer">
+          <option value="5">5 ml</option><option value="10" selected>10 ml</option><option value="15">15 ml</option>
+          <option value="30">30 ml / 1 oz</option><option value="60">60 ml / 2 oz</option><option value="100">100 ml</option>
+          <option value="120">120 ml / 4 oz</option><option value="250">250 ml</option><option value="500">500 ml</option>
+        </select></div>
+      <div><label for="bAudience">Who is it for?</label>
+        <select id="bAudience">
+          <option value="youngkid">Young kids 3 mo–6 yr (max 0.5%)</option>
+          <option value="kid">Kids 6+ / face / daily (max 1%)</option>
+          <option value="adult" selected>Adults — standard (max 2%)</option>
+          <option value="targeted">Adults — short-term targeted (max 3%)</option>
+          <option value="strong">Adults — strong short-term (max 5%)</option>
+        </select></div>
+    </div>
+    <label>Oils &amp; drops</label>
+    <div id="bLines"></div>
+    <button type="button" class="btn secondary small" id="addLineBtn">+ Add an oil</button>
+    <div class="big-out">
+      <div class="stat"><div class="num" id="bTotalDrops">0</div><div class="lbl">total drops</div></div>
+      <div class="stat"><div class="num" id="bPct">—</div><div class="lbl">dilution</div></div>
+      <div class="stat"><div class="num" id="bCarrier">—</div><div class="lbl">carrier/base to add (ml)</div></div>
+    </div>
+    <div id="bWarn"></div>
+    <label for="bNotes">Notes (where you use it, what you changed)</label>
+    <textarea id="bNotes" placeholder="e.g. Wrists before bed; use up the older lavender first"></textarea>
+    <div class="row" style="margin-top:12px">
+      <button type="button" class="btn" id="saveBlendBtn">Save blend</button>
+      <button type="button" class="btn secondary" id="cancelEditBtn" style="display:none">Cancel edit</button>
+    </div>
+  </div>
+  <div class="card">
+    <h2>My Saved Blends</h2>
+    <div id="myBlendList"></div>
+  </div>
+</section>
+
+<!-- ============ COLLECTION ============ -->
+<section class="tab" id="tab-collection">
+  <div class="card">
+    <h2>My Collection</h2>
+    <div class="kpis" id="colStats"></div>
+    <h3>Add a bottle</h3>
+    <div class="row">
+      <div><label for="cName">Oil name</label><input type="text" id="cName" list="oilNames" placeholder="Lavender"></div>
+      <div><label for="cBrand">Brand (optional)</label><input type="text" id="cBrand" placeholder="Any brand"></div>
+    </div>
+    <div class="row">
+      <div><label for="cSize">Bottle size (ml)</label><input inputmode="decimal" type="number" id="cSize" min="0" step="any" placeholder="15"></div>
+      <div><label for="cCost">What you paid ($)</label><input inputmode="decimal" type="number" id="cCost" min="0" step="any" placeholder="12.00"></div>
+    </div>
+    <div class="row">
+      <div><label for="cOpened">Date opened</label><input type="date" id="cOpened"></div>
+      <div><label for="cShelf">Shelf life (years)</label><input inputmode="decimal" type="number" id="cShelf" min="0" step="any" placeholder="auto"></div>
+    </div>
+    <p class="small">Shelf life fills in automatically for oils in the Guide (citrus ~1.5 yrs, most oils ~2–3, woods &amp; resins 4–6) — change it if your brand says different. Oxidized oils shouldn't go on skin; they're still fine for diffusing and cleaning.</p>
+    <button type="button" class="btn" id="addOilBtn">Add bottle</button>
+    <h3>Your bottles</h3>
+    <div id="colList"></div>
+  </div>
+  <div class="card">
+    <h2>Wish &amp; Shopping List</h2>
+    <p class="note">Oils you want, plus the ones a recipe needs that you don't own yet (add them from any blend in the Library with one tap).</p>
+    <div class="row">
+      <div><label for="wName">Oil name</label><input type="text" id="wName" list="oilNames" placeholder="Cedarwood"></div>
+      <div><label for="wNote">Note (optional)</label><input type="text" id="wNote" placeholder="For sleep blends"></div>
+    </div>
+    <button type="button" class="btn sage" id="addWishBtn">Add to list</button>
+    <div id="wishList" style="margin-top:10px"></div>
+    <div class="row" style="margin-top:10px">
+      <button type="button" class="btn secondary" id="printShopBtn">🖨 Print shopping list</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ OIL GUIDE ============ -->
+<section class="tab" id="tab-oils">
+  <div class="card">
+    <h2>Oil Guide</h2>
+    <p class="note">42 common oils — scent notes, what they pair with, typical shelf life, and conservative safety flags (phototoxic citrus, "hot" oils, kid &amp; pet cautions). General aromatherapy reference only — not medical advice.</p>
+    <label for="oilSearch">Search oils</label>
+    <input type="text" id="oilSearch" placeholder="lavender, citrus, phototoxic…">
+    <div id="oilCards"></div>
+  </div>
+</section>
+
+<!-- ============ HELP ============ -->
+<section class="tab" id="tab-help">
+  <div class="card">
+    <h2>Help &amp; Safety</h2>
+    <h3>How the dilution math works</h3>
+    <p class="note">Drops of essential oil = bottle size (ml) × dilution % × drops-per-ml ÷ 100. OilCraft defaults to <b>20 drops per ml</b>. Drop size honestly varies with the oil and the dropper — thin oils can run closer to 30 drops/ml, thick ones fewer — so you can change the standard in Settings. Charts from the Tisserand Institute (built on a finer dropper) show about 6 drops for 2% in a 10 ml roller; at 20 drops/ml OilCraft says 4 — erring weaker is the safe direction.</p>
+    <h3>Strength guide (conservative, Tisserand-based)</h3>
+    <table>
+      <tr><th>Strength</th><th>Who / what for</th></tr>
+      <tr><td>0.5%</td><td>Young kids, roughly 3 months–6 years — cautious band. Under age 2, get professional guidance; never apply near an infant's face.</td></tr>
+      <tr><td>1%</td><td>Kids 6+, facial products, daily-use adult blends, sensitive skin.</td></tr>
+      <tr><td>2%</td><td>Standard adult body blends — the everyday default.</td></tr>
+      <tr><td>3%</td><td>Adults, short-term, one targeted area.</td></tr>
+      <tr><td>5%</td><td>Adults, strong and short-term only. Not for daily use.</td></tr>
+    </table>
+    <h3>Safety rules that always apply</h3>
+    <p class="note">• Always dilute before skin use, and patch test first.<br>
+    • Phototoxic oils (cold-pressed bergamot, lemon, lime): keep leave-on amounts low and avoid sun/UV on that skin for 12–18 hours.<br>
+    • "Hot" oils (cinnamon bark, clove, oregano, thyme): use tiny amounts, always well diluted.<br>
+    • Peppermint and eucalyptus: keep away from the faces of young children (peppermint under ~6, eucalyptus under ~10).<br>
+    • Wintergreen is not for children. Tea tree is toxic to pets if swallowed or used undiluted — never apply oils to pets.<br>
+    • Diffuse in ventilated rooms and let pets leave the room if they want to.<br>
+    • OilCraft gives no ingestion advice. Don't use essential oils internally based on this app.<br>
+    • Pregnant, nursing, taking medication, or blending for babies? Ask a qualified aromatherapist or your care provider.<br>
+    • Oxidized (past-best) oils are more likely to irritate skin — move them to cleaning and diffusing duty.</p>
+    <h3>Your data</h3>
+    <p class="note">Everything lives in this browser on this device (localStorage). Nothing is uploaded anywhere. Use Settings → Export backup before switching devices or clearing browser data — the backup is a small file you can re-import.</p>
+    <h3>Disclaimer</h3>
+    <p class="note">OilCraft is a blending calculator and record keeper. It is not medical advice and does not diagnose, treat, cure, or prevent any condition. Blend names describe scents and occasions, not health effects. Safety information is general educational reference based on widely published aromatherapy guidance (including Tisserand &amp; Young's <i>Essential Oil Safety</i>); when in doubt, use less and ask a professional.</p>
+  </div>
+</section>
+
+<!-- ============ SETTINGS ============ -->
+<section class="tab" id="tab-settings">
+<div class="card"><h3 style="margin-top:0">Legal</h3><p>Terms of Use, the applicable disclaimer, our privacy statement, and your recorded acceptance.</p><button type="button" class="btn ww-legal-open-btn" data-ww-legal="1">⚖️ Legal — Terms, Disclaimer &amp; Privacy</button></div>
+  <div class="card">
+    <h2>Settings</h2>
+    <div class="row">
+      <div><label for="sDpm">Drops per ml (your dropper standard)</label><input inputmode="decimal" type="number" id="sDpm" min="1" max="100" step="any"></div>
+      <div><label for="sAudience">Default "who is it for" in the Blend Builder</label>
+        <select id="sAudience">
+          <option value="youngkid">Young kids 3 mo–6 yr (max 0.5%)</option>
+          <option value="kid">Kids 6+ / face / daily (max 1%)</option>
+          <option value="adult">Adults — standard (max 2%)</option>
+          <option value="targeted">Adults — short-term targeted (max 3%)</option>
+          <option value="strong">Adults — strong short-term (max 5%)</option>
+        </select></div>
+    </div>
+    <button type="button" class="btn" id="saveSettingsBtn" style="margin-top:12px">Save settings</button>
+    <h3>Backup &amp; data</h3>
+    <div class="row">
+      <button type="button" class="btn secondary" id="exportBtn">Export backup</button>
+      <button type="button" class="btn secondary" id="importOpenBtn">Import backup</button>
+    </div>
+    <div class="row" style="margin-top:10px">
+      <button type="button" class="btn secondary" id="clearDemoBtn">Clear demo data</button>
+      <button type="button" class="btn danger" id="eraseAllBtn">Erase ALL data</button>
+    </div>
+    <p class="small" id="demoNote"></p>
+  </div>
+</section>
+</div><!-- /wrap -->
+
+<datalist id="oilNames"></datalist>
+
+<div class="modal" id="ioModal">
+  <div class="box">
+    <h3 style="margin-top:0" id="ioTitle">Backup</h3>
+    <textarea id="ioText" placeholder="Your backup JSON appears here after Export — or paste a backup here and tap Import."></textarea>
+    <label for="ioFile">…or choose a backup file</label>
+    <input type="file" id="ioFile" accept=".json,.txt,application/json">
+    <div class="row" style="margin-top:12px">
+      <button type="button" class="btn" id="doImportBtn">Import this backup</button>
+      <button type="button" class="btn secondary" id="ioCloseBtn">Close</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+<div id="printArea"></div>
+
+<script>
+"use strict";
+/* ================= REFERENCE DATA ================= */
+var REF_OILS=[
+{name:"Lavender",cat:"Floral",shelf:3,scent:"Soft, sweet floral with a clean herbal finish",pairs:["Cedarwood","Bergamot","Clary Sage","Vetiver"],flags:{kid:"One of the gentlest oils — still always dilute for children."}},
+{name:"Tea Tree",cat:"Herbal",shelf:2,scent:"Fresh, medicinal, camphor-like",pairs:["Lavender","Lemon","Eucalyptus","Rosemary"],flags:{pet:"Toxic to cats and dogs if swallowed or used undiluted — never apply oils to pets; store bottles away from them."}},
+{name:"Peppermint",cat:"Mint",shelf:3,scent:"Cool, sharp, classic mint",pairs:["Rosemary","Lemon","Eucalyptus","Lavender"],flags:{kid:"Menthol-rich — keep away from the faces of children under 6.",pet:"Use cautiously around cats; diffuse with a door open so pets can leave."}},
+{name:"Eucalyptus",cat:"Herbal",shelf:3,scent:"Strong, camphorous, clearing",pairs:["Peppermint","Tea Tree","Cedarwood","Lemon"],flags:{kid:"Rich in 1,8-cineole — keep away from the faces of children under 10."}},
+{name:"Lemon",cat:"Citrus",shelf:1.5,scent:"Bright, zesty, clean",pairs:["Lavender","Peppermint","Rosemary","Bergamot"],flags:{photo:"Cold-pressed lemon is phototoxic — avoid sun/UV on skin where applied for 12–18 hours, or keep leave-on amounts low."}},
+{name:"Sweet Orange",cat:"Citrus",shelf:1.5,scent:"Sweet, juicy, cheerful citrus",pairs:["Cinnamon Bark","Frankincense","Ylang Ylang","Cedarwood"],flags:{}},
+{name:"Grapefruit",cat:"Citrus",shelf:1.5,scent:"Tart, fresh, sparkling",pairs:["Bergamot","Rosemary","Ylang Ylang","Peppermint"],flags:{photo:"Mild phototoxic potential at high amounts — use care on sun-exposed skin."}},
+{name:"Bergamot",cat:"Citrus",shelf:1.5,scent:"Citrus with a soft Earl-Grey floral note",pairs:["Lavender","Cedarwood","Ylang Ylang","Frankincense"],flags:{photo:"One of the most phototoxic oils — keep leave-on dilutions low and avoid sun/UV on treated skin for 12–18 hours."}},
+{name:"Lime",cat:"Citrus",shelf:1.5,scent:"Sharp, sweet lime zest",pairs:["Citronella","Lavender","Rosemary","Spearmint"],flags:{photo:"Cold-pressed lime is phototoxic — avoid sun/UV on skin where applied for 12–18 hours."}},
+{name:"Mandarin",cat:"Citrus",shelf:1.5,scent:"Gentle, sweet, soft citrus",pairs:["Lavender","Roman Chamomile","Neroli","Sandalwood"],flags:{kid:"Often chosen for children's blends — still dilute by age."}},
+{name:"Frankincense",cat:"Resin",shelf:4,scent:"Warm, woody, resinous",pairs:["Lavender","Cedarwood","Bergamot","Myrrh"],flags:{}},
+{name:"Cedarwood",cat:"Wood",shelf:4,scent:"Warm dry wood, softly pencil-like",pairs:["Lavender","Bergamot","Vetiver","Clary Sage"],flags:{}},
+{name:"Sandalwood",cat:"Wood",shelf:6,scent:"Creamy, soft, deep wood",pairs:["Lavender","Rose","Ylang Ylang","Frankincense"],flags:{}},
+{name:"Patchouli",cat:"Herbal",shelf:6,scent:"Earthy, musky, sweet-herbaceous",pairs:["Lavender","Bergamot","Cedarwood","Ylang Ylang"],flags:{}},
+{name:"Vetiver",cat:"Root",shelf:6,scent:"Deep, smoky, earthy root",pairs:["Lavender","Sandalwood","Clary Sage","Ylang Ylang"],flags:{}},
+{name:"Myrrh",cat:"Resin",shelf:6,scent:"Warm, balsamic resin",pairs:["Frankincense","Lavender","Tea Tree","Sandalwood"],flags:{}},
+{name:"Rosemary",cat:"Herbal",shelf:3,scent:"Fresh, camphorous herb",pairs:["Peppermint","Lemon","Lavender","Cedarwood"],flags:{kid:"Cineole-rich — keep away from the faces of young children and use gentle dilutions."}},
+{name:"Basil",cat:"Herbal",shelf:3,scent:"Sweet green herb with a hint of spice",pairs:["Lemon","Rosemary","Bergamot","Peppermint"],flags:{}},
+{name:"Thyme",cat:"Herbal",shelf:3,scent:"Warm, herbaceous, powerful",pairs:["Lavender","Tea Tree","Rosemary","Lemon"],flags:{hot:"A strong, “hot” oil — always dilute well; can irritate skin."}},
+{name:"Oregano",cat:"Herbal",shelf:3,scent:"Pungent, hot herb",pairs:["Tea Tree","Lavender","Lemon","Rosemary"],flags:{hot:"A very hot oil — always dilute well (around 1% or less in leave-on blends) and never use undiluted."}},
+{name:"Clove Bud",cat:"Spice",shelf:4,scent:"Warm, sweet spice",pairs:["Cinnamon Bark","Sweet Orange","Lavender","Frankincense"],flags:{hot:"A hot oil — always dilute well; can irritate skin."}},
+{name:"Cinnamon Bark",cat:"Spice",shelf:4,scent:"Hot, sweet, true cinnamon",pairs:["Sweet Orange","Clove Bud","Frankincense","Ginger"],flags:{hot:"One of the hottest oils — use tiny amounts (well under 1% in leave-on blends); a common skin sensitizer."}},
+{name:"Ginger",cat:"Spice",shelf:4,scent:"Warm, fresh, lemony spice",pairs:["Sweet Orange","Lemon","Cedarwood","Ylang Ylang"],flags:{}},
+{name:"Black Pepper",cat:"Spice",shelf:4,scent:"Dry, warm, piquant",pairs:["Frankincense","Rosemary","Lavender","Sweet Marjoram"],flags:{}},
+{name:"Ylang Ylang",cat:"Floral",shelf:4,scent:"Rich, sweet, exotic floral",pairs:["Lavender","Bergamot","Sandalwood","Grapefruit"],flags:{pet:"Use cautiously around cats — diffuse with ventilation and an open door."}},
+{name:"Geranium",cat:"Floral",shelf:3,scent:"Rosy, green, sweet floral",pairs:["Lavender","Bergamot","Clary Sage","Rose"],flags:{}},
+{name:"Roman Chamomile",cat:"Floral",shelf:3,scent:"Sweet, apple-like, soft floral",pairs:["Lavender","Mandarin","Clary Sage","Frankincense"],flags:{kid:"A classic gentle choice for children's blends — still dilute by age."}},
+{name:"Clary Sage",cat:"Herbal",shelf:3,scent:"Earthy, nutty, sweet-herbaceous",pairs:["Lavender","Geranium","Cedarwood","Bergamot"],flags:{extra:"Traditional guidance often avoids clary sage during pregnancy — ask your care provider."}},
+{name:"Jasmine",cat:"Floral",shelf:4,scent:"Intensely sweet, warm floral (usually an absolute)",pairs:["Sandalwood","Ylang Ylang","Bergamot","Rose"],flags:{}},
+{name:"Rose",cat:"Floral",shelf:4,scent:"Deep, rich, classic rose",pairs:["Geranium","Sandalwood","Lavender","Patchouli"],flags:{}},
+{name:"Neroli",cat:"Floral",shelf:2,scent:"Delicate orange-blossom floral",pairs:["Lavender","Rose","Frankincense","Mandarin"],flags:{}},
+{name:"Helichrysum",cat:"Herbal",shelf:4,scent:"Honeyed, herbal, tea-like",pairs:["Lavender","Frankincense","Geranium","Rose"],flags:{}},
+{name:"Copaiba",cat:"Resin",shelf:4,scent:"Soft, woody, balsamic",pairs:["Cedarwood","Frankincense","Lavender","Ylang Ylang"],flags:{}},
+{name:"Pine",cat:"Conifer",shelf:2,scent:"Fresh, resinous forest",pairs:["Cedarwood","Lemon","Tea Tree","Eucalyptus"],flags:{pet:"Use cautiously around cats — ventilate and let pets leave the room."}},
+{name:"Cypress",cat:"Conifer",shelf:2,scent:"Fresh, woody evergreen",pairs:["Lavender","Bergamot","Juniper Berry","Cedarwood"],flags:{}},
+{name:"Juniper Berry",cat:"Conifer",shelf:2,scent:"Crisp, piney, peppery berry",pairs:["Cypress","Bergamot","Rosemary","Cedarwood"],flags:{}},
+{name:"Lemongrass",cat:"Herbal",shelf:2.5,scent:"Lemony, green, sharp",pairs:["Lavender","Tea Tree","Basil","Geranium"],flags:{extra:"Can irritate skin — keep leave-on dilutions low (around 1% or less)."}},
+{name:"Citronella",cat:"Herbal",shelf:2,scent:"Fresh, lemony, grassy",pairs:["Cedarwood","Lemon","Pine","Geranium"],flags:{}},
+{name:"Spearmint",cat:"Mint",shelf:3,scent:"Softer, sweeter mint",pairs:["Peppermint","Lavender","Lime","Basil"],flags:{kid:"Gentler than peppermint and often preferred for kids — still dilute, and avoid the faces of very young children."}},
+{name:"Wintergreen",cat:"Herbal",shelf:3,scent:"Sweet, minty, medicinal",pairs:["Peppermint","Sweet Marjoram","Lavender","Oregano"],flags:{kid:"NOT for children — high in methyl salicylate. Also avoid during pregnancy and with blood-thinning medication; ask a professional."}},
+{name:"Fennel",cat:"Herbal",shelf:3,scent:"Sweet, anise-like",pairs:["Lavender","Geranium","Lemon","Sandalwood"],flags:{extra:"Traditional guidance avoids fennel for young children and during pregnancy — ask a professional."}},
+{name:"Sweet Marjoram",cat:"Herbal",shelf:3,scent:"Warm, green, woody-herbaceous",pairs:["Lavender","Cedarwood","Roman Chamomile","Bergamot"],flags:{}}
+];
+var REF_BY_NAME={};
+REF_OILS.forEach(function(o){REF_BY_NAME[o.name.toLowerCase()]=o;});
+
+/* Built-in blends. lines = [oil name, drops]. baseMl set for carrier/water blends. */
+var RECIPES=[
+{id:"r1",name:"Deep Sleep Roller",cat:"Sleep",format:"roller",baseMl:10,lines:[["Lavender",4],["Cedarwood",2],["Vetiver",1]],how:"Roll on wrists, neck, and soles of the feet as part of your wind-down routine."},
+{id:"r2",name:"Sweet Dreams Kids Roller",cat:"Sleep",format:"roller",baseMl:10,audience:"youngkid",lines:[["Lavender",1],["Mandarin",1]],how:"A gentle 1%-or-under roller for kids 3+. Roll on the back or feet at bedtime — never near the face of a child under 2, and ask a professional for babies."},
+{id:"r3",name:"Sleep Diffuser Blend",cat:"Sleep",format:"diffuser",lines:[["Lavender",3],["Cedarwood",2],["Roman Chamomile",1]],how:"Add to your diffuser 30 minutes before bed; run intermittently."},
+{id:"r4",name:"Gentle Baby-Room Diffuser",cat:"Sleep",format:"diffuser",audience:"youngkid",lines:[["Lavender",1],["Roman Chamomile",1],["Mandarin",1]],how:"For a well-ventilated room, short sessions only (15–30 min), diffuser placed away from the crib. Diffusion only — nothing on baby's skin."},
+{id:"r5",name:"Calm Mind Roller",cat:"Mood",format:"roller",baseMl:10,lines:[["Bergamot",3],["Lavender",2],["Frankincense",1]],how:"Roll on wrists and inhale during a busy day. Bergamot is phototoxic — don't put this where sun will hit for 12–18 hours."},
+{id:"r6",name:"Sunshine Mood Roller",cat:"Mood",format:"roller",baseMl:10,lines:[["Sweet Orange",3],["Grapefruit",2],["Ylang Ylang",1]],how:"A bright, fruity wrist roller. Citrus + sun: use on covered skin or enjoy in the evening."},
+{id:"r7",name:"Evening Unwind Diffuser",cat:"Mood",format:"diffuser",lines:[["Frankincense",2],["Lavender",2],["Bergamot",2]],how:"Diffuse during dinner or reading time for a calm, resinous-floral room."},
+{id:"r8",name:"Forest Walk Diffuser",cat:"Mood",format:"diffuser",lines:[["Pine",2],["Cedarwood",2],["Juniper Berry",1]],how:"Woodsy and fresh — lovely in a living room or entryway."},
+{id:"r9",name:"Focus Roller",cat:"Focus",format:"roller",baseMl:10,lines:[["Peppermint",2],["Rosemary",2],["Lemon",2]],how:"Roll on wrists or temples (avoid eyes) before desk work. Lemon is phototoxic — covered skin or indoor days."},
+{id:"r10",name:"Study Buddy Diffuser",cat:"Focus",format:"diffuser",lines:[["Lemon",3],["Rosemary",2],["Peppermint",1]],how:"Diffuse near your study space in 30-minute bursts."},
+{id:"r11",name:"Herb Garden Focus Diffuser",cat:"Focus",format:"diffuser",lines:[["Basil",2],["Lemon",2],["Rosemary",2]],how:"Green and bright for afternoon work sessions."},
+{id:"r12",name:"Breathe Easy Roller",cat:"Seasonal Breathing",format:"roller",baseMl:10,lines:[["Eucalyptus",2],["Peppermint",1],["Tea Tree",1],["Lavender",1]],how:"Roll on chest and upper back during stuffy-weather season. Adults and older kids only — keep eucalyptus away from young children's faces."},
+{id:"r13",name:"Seasonal Trio Diffuser",cat:"Seasonal Breathing",format:"diffuser",lines:[["Lemon",2],["Lavender",2],["Peppermint",2]],how:"The classic lemon-lavender-peppermint trio for spring and fall days. Diffuse intermittently."},
+{id:"r14",name:"Clear Air Inhaler Blend",cat:"Seasonal Breathing",format:"drops",lines:[["Peppermint",4],["Eucalyptus",3],["Lemon",3]],how:"Add drops to a personal inhaler wick. Sniff as needed; never insert oils into the nose, and keep away from young children."},
+{id:"r15",name:"Glowing Face Serum",cat:"Skin & Beauty",format:"roller",baseMl:10,audience:"kid",lines:[["Frankincense",1],["Helichrysum",1]],how:"A gentle 1% face oil. Apply a thin layer after cleansing; patch test first."},
+{id:"r16",name:"Fresh Face Spot Roller",cat:"Skin & Beauty",format:"roller",baseMl:5,lines:[["Tea Tree",1],["Lavender",1]],how:"Dab on single spots with the roller. A small 5 ml roller keeps the dilution in the gentle range."},
+{id:"r17",name:"Cuticle & Nail Roller",cat:"Skin & Beauty",format:"roller",baseMl:10,lines:[["Lavender",2],["Lemon",1],["Frankincense",1]],how:"Roll around cuticles nightly. Lemon is phototoxic — evening use is perfect."},
+{id:"r18",name:"Sweet Citrus Body Oil",cat:"Skin & Beauty",format:"roller",baseMl:30,lines:[["Sweet Orange",5],["Grapefruit",3],["Ylang Ylang",2]],how:"Massage oil for after a shower (30 ml bottle). Use on covered skin or in the evening — citrus can be sun-sensitive."},
+{id:"r19",name:"Hair Shine Serum",cat:"Hair",format:"roller",baseMl:30,lines:[["Rosemary",4],["Cedarwood",3],["Lavender",3],["Peppermint",2]],how:"A few drops warmed in palms, smoothed through hair ends or massaged into the scalp before washing (30 ml bottle)."},
+{id:"r20",name:"Citrus Grove Perfume Roller",cat:"Roller Perfume",format:"roller",baseMl:10,lines:[["Grapefruit",3],["Bergamot",2],["Ylang Ylang",1],["Sandalwood",1]],how:"Pulse-point perfume. Bergamot is phototoxic — wear on covered pulse points (inside elbows, behind ears under hair) or as an evening scent."},
+{id:"r21",name:"Cozy Woods Perfume Roller",cat:"Roller Perfume",format:"roller",baseMl:10,lines:[["Cedarwood",3],["Bergamot",2],["Patchouli",1],["Lavender",1]],how:"Warm, woodsy pulse-point scent. Same bergamot sun note as above."},
+{id:"r22",name:"Rose Garden Perfume Roller",cat:"Roller Perfume",format:"roller",baseMl:10,lines:[["Rose",2],["Geranium",2],["Sandalwood",2]],how:"A classic floral perfume roller for wrists and neck."},
+{id:"r23",name:"All-Purpose Cleaning Spray",cat:"Home & Cleaning",format:"spray",baseMl:500,lines:[["Lemon",15],["Tea Tree",10],["Lavender",5]],how:"Add to a 500 ml spray bottle of water with a splash of castile soap or vinegar as a dispersant. Shake before each use; use within a few weeks. Test surfaces first."},
+{id:"r24",name:"Kitchen Citrus Degreaser Spray",cat:"Home & Cleaning",format:"spray",baseMl:500,lines:[["Lemon",12],["Grapefruit",8],["Tea Tree",5]],how:"500 ml water + a little castile soap. Shake well; great on counters and stovetops (test finishes first)."},
+{id:"r25",name:"Bathroom Fresh Spray",cat:"Home & Cleaning",format:"spray",baseMl:250,lines:[["Eucalyptus",10],["Tea Tree",8],["Peppermint",6]],how:"250 ml water with a dispersant splash. Shake, spray, wipe. Keep away from pets until dry."},
+{id:"r26",name:"Linen & Pillow Mist",cat:"Home & Cleaning",format:"spray",baseMl:100,lines:[["Lavender",8],["Roman Chamomile",4],["Cedarwood",3]],how:"100 ml water + 1 tsp witch hazel or vodka as a dispersant. Mist pillows and linens; shake each time."},
+{id:"r27",name:"Laundry Scent Booster Drops",cat:"Home & Cleaning",format:"drops",lines:[["Lavender",2],["Lemon",2]],how:"Add to wool dryer balls or a washcloth in the dryer. Never drip oils straight onto clothes in the wash — they can spot fabric."},
+{id:"r28",name:"Spiced Cider Diffuser",cat:"Home & Cleaning",format:"diffuser",lines:[["Sweet Orange",3],["Cinnamon Bark",1],["Clove Bud",1],["Ginger",1]],how:"Cozy kitchen scent. Cinnamon and clove are hot oils — diffuser use only, and keep the diffuser where kids and pets can choose to leave."},
+{id:"r29",name:"Soak & Unwind Bath Blend",cat:"Bath",format:"bath",lines:[["Lavender",4],["Roman Chamomile",2],["Frankincense",2]],how:"FIRST mix the drops into 1 tbsp carrier oil, Epsom salt, or castile soap — never drop oils straight into bath water, they float undiluted on skin."},
+{id:"r30",name:"Evening Garden Soak",cat:"Bath",format:"bath",lines:[["Sweet Marjoram",3],["Lavender",3],["Rosemary",2]],how:"Mix into 1 tbsp carrier oil or a handful of Epsom salts before adding to the tub."},
+{id:"r31",name:"Morning Energy Diffuser",cat:"Mood",format:"diffuser",lines:[["Sweet Orange",3],["Peppermint",2],["Lemon",1]],how:"Bright start — diffuse while you get ready."},
+{id:"r32",name:"Cozy Cabin Diffuser",cat:"Home & Cleaning",format:"diffuser",lines:[["Cedarwood",2],["Pine",2],["Sweet Orange",2],["Clove Bud",1]],how:"Fireplace-night scent for living rooms."},
+{id:"r33",name:"Spa Day Diffuser",cat:"Mood",format:"diffuser",lines:[["Eucalyptus",2],["Spearmint",2],["Lime",2]],how:"Clean, spa-like steam-room vibe for bathrooms (keep the door open for pets)."}
+];
+var RECIPE_CATS=["Sleep","Mood","Focus","Seasonal Breathing","Skin & Beauty","Hair","Roller Perfume","Home & Cleaning","Bath"];
+var FORMATS={roller:"Roller / bottle blend",spray:"Spray",diffuser:"Diffuser blend",bath:"Bath blend",drops:"Use-as-is drops"};
+var AUDIENCES={
+  youngkid:{label:"Young kids 3 mo–6 yr · cautious",max:0.5},
+  kid:{label:"Kids 6+ / face / daily",max:1},
+  adult:{label:"Adults — standard body",max:2},
+  targeted:{label:"Adults — short-term targeted",max:3},
+  strong:{label:"Adults — strong, short-term only",max:5}
+};
+</script>
+
+<script>
+"use strict";
+/* ================= STATE & UTILITIES ================= */
+var LS_KEY="oilcraft_v1";
+function $(id){return document.getElementById(id);}
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+var _uid=1;
+function uid(){return "x"+Date.now().toString(36)+(_uid++);}
+var toastTimer=null;
+function toast(msg){var t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(function(){t.classList.remove("show");},2600);}
+function pad(n){return (n<10?"0":"")+n;}
+function dateStr(d){return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());}
+function todayStr(){return dateStr(new Date());}
+function daysAgoStr(n){var d=new Date();d.setDate(d.getDate()-n);return dateStr(d);}
+function validDateStr(s){
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(s||""))return false;
+  var p=s.split("-"),y=+p[0],m=+p[1],d=+p[2];
+  var dt=new Date(y,m-1,d);
+  return dt.getFullYear()===y&&dt.getMonth()===m-1&&dt.getDate()===d;
+}
+function addMonthsStr(s,months){
+  var p=s.split("-"),y=+p[0],m=+p[1],d=+p[2];
+  var dt=new Date(y,m-1+months,1);
+  var last=new Date(dt.getFullYear(),dt.getMonth()+1,0).getDate();
+  dt.setDate(Math.min(d,last));
+  return dateStr(dt);
+}
+function daysBetween(a,b){ /* a,b date strings → whole days b-a */
+  var pa=a.split("-"),pb=b.split("-");
+  var da=Date.UTC(+pa[0],+pa[1]-1,+pa[2]),db=Date.UTC(+pb[0],+pb[1]-1,+pb[2]);
+  return Math.round((db-da)/86400000);
+}
+function money(n){return "$"+Number(n||0).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});}
+function num(v,def){var n=parseFloat(v);return isFinite(n)?n:(def||0);}
+
+/* ---- math core (also exposed on window.OC for testing) ---- */
+function dilutionCalc(ml,pct,dpm){
+  ml=num(ml);pct=num(pct);dpm=num(dpm,20);
+  if(ml<=0||pct<0||dpm<=0)return{drops:0,eoMl:0,carrierMl:0};
+  var eoMl=ml*pct/100;
+  return{drops:eoMl*dpm,eoMl:eoMl,carrierMl:Math.max(0,ml-eoMl)};
+}
+function blendPct(totalDrops,ml,dpm){
+  totalDrops=num(totalDrops);ml=num(ml);dpm=num(dpm,20);
+  if(ml<=0||dpm<=0)return 0;
+  return (totalDrops/dpm)/ml*100;
+}
+function scaleLine(drops,fromMl,toMl){
+  drops=num(drops);fromMl=num(fromMl);toMl=num(toMl);
+  if(drops<=0||fromMl<=0||toMl<=0)return 0;
+  var v=Math.round(drops*toMl/fromMl);
+  return v<1?1:v;
+}
+function expiryOf(item){return addMonthsStr(item.opened,Math.round(num(item.shelfYears,2)*12));}
+function oilStatus(item,today){
+  today=today||todayStr();
+  var exp=expiryOf(item);
+  var days=daysBetween(today,exp);
+  if(days<0)return{code:"past",label:"Past best — diffuse/clean only",expiry:exp,days:days};
+  if(days<=90)return{code:"soon",label:"Use soon — best by "+exp,expiry:exp,days:days};
+  return{code:"fresh",label:"Fresh — best by "+exp,expiry:exp,days:days};
+}
+function collectionNameSet(){
+  var s={};
+  state.collection.forEach(function(c){s[String(c.name||"").trim().toLowerCase()]=true;});
+  return s;
+}
+function missingFor(recipe){
+  var owned=collectionNameSet();
+  var out=[];
+  recipe.lines.forEach(function(L){if(!owned[String(L[0]).trim().toLowerCase()])out.push(L[0]);});
+  return out;
+}
+
+/* ---- state ---- */
+function freshState(withDemo){
+  var st={v:1,settings:{dpm:20,audience:"adult"},collection:[],wishlist:[],blends:[],favs:[]};
+  if(withDemo)seedDemoInto(st);
+  return st;
+}
+function seedDemoInto(st){
+  st.collection.push(
+    {id:uid(),name:"Lavender",brand:"",sizeMl:15,cost:12,opened:daysAgoStr(60),shelfYears:3,demo:true},
+    {id:uid(),name:"Peppermint",brand:"",sizeMl:15,cost:9,opened:daysAgoStr(200),shelfYears:3,demo:true},
+    {id:uid(),name:"Lemon",brand:"",sizeMl:15,cost:8,opened:daysAgoStr(500),shelfYears:1.5,demo:true},
+    {id:uid(),name:"Tea Tree",brand:"",sizeMl:15,cost:10,opened:daysAgoStr(120),shelfYears:2,demo:true},
+    {id:uid(),name:"Sweet Orange",brand:"",sizeMl:10,cost:7,opened:daysAgoStr(45),shelfYears:1.5,demo:true},
+    {id:uid(),name:"Frankincense",brand:"",sizeMl:5,cost:18,opened:daysAgoStr(300),shelfYears:4,demo:true}
+  );
+  st.blends.push(
+    {id:uid(),name:"My Bedtime Roller",cat:"Sleep",format:"roller",baseMl:10,audience:"adult",lines:[["Lavender",3],["Frankincense",1]],notes:"Demo blend — wrists before bed.",fav:true,demo:true},
+    {id:uid(),name:"My Kitchen Counter Spray",cat:"Home & Cleaning",format:"spray",baseMl:250,audience:"adult",lines:[["Lemon",10],["Tea Tree",6]],notes:"Demo blend — shake before use.",fav:false,demo:true}
+  );
+  st.wishlist.push({id:uid(),name:"Cedarwood",note:"For sleep blends",demo:true});
+}
+var state=null;
+function saveState(){try{localStorage.setItem(LS_KEY,JSON.stringify(state));}catch(e){}}
+function loadState(){
+  var raw=null;
+  try{raw=localStorage.getItem(LS_KEY);}catch(e){}
+  if(!raw){state=freshState(true);saveState();return;}
+  try{
+    var parsed=JSON.parse(raw);
+    if(!parsed||typeof parsed!=="object"||!parsed.settings)throw new Error("bad shape");
+    state=normalizeState(parsed);
+  }catch(e){
+    try{localStorage.setItem(LS_KEY+"_corrupt_backup",raw);}catch(e2){}
+    state=freshState(true);saveState();
+  }
+}
+function normalizeState(p){
+  var st=freshState(false);
+  st.settings.dpm=Math.min(100,Math.max(1,num(p.settings&&p.settings.dpm,20)));
+  st.settings.audience=AUDIENCES[p.settings&&p.settings.audience]?p.settings.audience:"adult";
+  (Array.isArray(p.collection)?p.collection:[]).forEach(function(c){
+    if(!c||!String(c.name||"").trim())return;
+    st.collection.push({id:String(c.id||uid()),name:String(c.name),brand:String(c.brand||""),sizeMl:Math.max(0,num(c.sizeMl)),cost:Math.max(0,num(c.cost)),opened:validDateStr(c.opened)?c.opened:todayStr(),shelfYears:Math.max(0,num(c.shelfYears,2)),demo:!!c.demo});
+  });
+  (Array.isArray(p.wishlist)?p.wishlist:[]).forEach(function(w){
+    if(!w||!String(w.name||"").trim())return;
+    st.wishlist.push({id:String(w.id||uid()),name:String(w.name),note:String(w.note||""),demo:!!w.demo});
+  });
+  (Array.isArray(p.blends)?p.blends:[]).forEach(function(b){
+    if(!b||!String(b.name||"").trim())return;
+    var lines=[];
+    (Array.isArray(b.lines)?b.lines:[]).forEach(function(L){if(L&&String(L[0]||"").trim())lines.push([String(L[0]),Math.max(0,num(L[1]))]);});
+    st.blends.push({id:String(b.id||uid()),name:String(b.name),cat:String(b.cat||"Other"),format:FORMATS[b.format]?b.format:"roller",baseMl:b.baseMl?Math.max(0,num(b.baseMl)):null,audience:AUDIENCES[b.audience]?b.audience:"adult",lines:lines,notes:String(b.notes||""),fav:!!b.fav,demo:!!b.demo});
+  });
+  st.favs=(Array.isArray(p.favs)?p.favs:[]).filter(function(f){return typeof f==="string";});
+  st.legal=(p.legal&&typeof p.legal==="object")?{termsVersion:String(p.legal.termsVersion||""),acceptedDate:String(p.legal.acceptedDate||""),disclaimerShown:!!p.legal.disclaimerShown}:null;
+  return st;
+}
+
+/* ================= TABS ================= */
+$("tabBar").addEventListener("click",function(e){
+  var b=e.target.closest("button[data-tab]");if(!b)return;
+  document.querySelectorAll("nav.tabs button").forEach(function(x){x.classList.toggle("active",x===b);});
+  document.querySelectorAll("section.tab").forEach(function(s){s.classList.toggle("active",s.id==="tab-"+b.dataset.tab);});
+});
+function gotoTab(name){
+  document.querySelectorAll("nav.tabs button").forEach(function(x){x.classList.toggle("active",x.dataset.tab===name);});
+  document.querySelectorAll("section.tab").forEach(function(s){s.classList.toggle("active",s.id==="tab-"+name);});
+}
+
+/* ================= DILUTION CALCULATOR ================= */
+function dcMl(){
+  var v=$("dcSize").value;
+  if(v==="custom")return num($("dcCustomMl").value);
+  return num(v);
+}
+function renderDilution(){
+  var ml=dcMl(),pct=num($("dcPct").value),dpm=state.settings.dpm;
+  $("dcDpmEcho").textContent=dpm+" drops per ml";
+  var r=dilutionCalc(ml,pct,dpm);
+  $("dcDrops").textContent=ml>0?String(Math.round(r.drops)):"—";
+  $("dcEoMl").textContent=ml>0?r.eoMl.toFixed(2):"—";
+  $("dcCarrier").textContent=ml>0?r.carrierMl.toFixed(1):"—";
+  $("dcCarrierTsp").textContent=ml>0?(r.carrierMl/4.93).toFixed(1):"—";
+  /* quick chart */
+  var sizes=[5,10,15,30,60,120],pcts=[0.5,1,2,3,5];
+  var h="<table><tr><th>Bottle</th>"+pcts.map(function(p){return "<th>"+p+"%</th>";}).join("")+"</tr>";
+  sizes.forEach(function(s){
+    h+="<tr><td>"+s+" ml</td>"+pcts.map(function(p){return "<td>"+Math.round(dilutionCalc(s,p,dpm).drops)+"</td>";}).join("")+"</tr>";
+  });
+  $("dcChart").innerHTML=h+"</table>";
+}
+$("dcSize").addEventListener("change",function(){
+  $("dcCustomWrap").style.display=$("dcSize").value==="custom"?"block":"none";
+  renderDilution();
+});
+$("dcCustomMl").addEventListener("input",renderDilution);
+$("dcPct").addEventListener("input",function(){
+  var v=num($("dcPct").value);
+  document.querySelectorAll("#dcPresets button").forEach(function(b){b.classList.toggle("active",num(b.dataset.pct)===v);});
+  renderDilution();
+});
+$("dcPresets").addEventListener("click",function(e){
+  var b=e.target.closest("button[data-pct]");if(!b)return;
+  $("dcPct").value=b.dataset.pct;
+  document.querySelectorAll("#dcPresets button").forEach(function(x){x.classList.toggle("active",x===b);});
+  renderDilution();
+});
+</script>
+
+<script>
+"use strict";
+/* ================= BLEND LIBRARY ================= */
+var scaleSel={}; /* recipe id -> chosen container ml */
+function cardEl(id){return document.querySelector('[id="rec-'+id+'"]');}
+function recipeTotalDrops(r){return r.lines.reduce(function(a,L){return a+num(L[1]);},0);}
+function recipePct(r,ml){
+  if(!ml)return null;
+  return blendPct(recipeTotalDrops(r),ml,state.settings.dpm);
+}
+function scaledLines(r,toMl){
+  if(!r.baseMl||!toMl)return r.lines.map(function(L){return [L[0],num(L[1])];});
+  return r.lines.map(function(L){return [L[0],scaleLine(L[1],r.baseMl,toMl)];});
+}
+function isFav(r){
+  if(r.mine)return !!r.fav;
+  return state.favs.indexOf(r.id)>=0;
+}
+function allRecipes(){
+  var mine=state.blends.map(function(b){
+    return {id:b.id,mine:true,name:b.name,cat:b.cat,format:b.format,baseMl:b.baseMl,audience:b.audience,lines:b.lines,how:b.notes||"",fav:b.fav,demo:b.demo};
+  });
+  return RECIPES.concat(mine);
+}
+function findRecipe(id){
+  var all=allRecipes();
+  for(var i=0;i<all.length;i++)if(all[i].id===id)return all[i];
+  return null;
+}
+function recipeCardHTML(r){
+  var fav=isFav(r);
+  var pct=r.baseMl?recipePct(r,r.baseMl):null;
+  var toMl=scaleSel[r.id]||r.baseMl;
+  var lines=scaledLines(r,toMl);
+  var totDrops=lines.reduce(function(a,L){return a+L[1];},0);
+  var pctScaled=toMl?blendPct(totDrops,toMl,state.settings.dpm):null;
+  var miss=missingFor(r);
+  var h='<div class="recipe" id="rec-'+esc(r.id)+'">';
+  h+='<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">';
+  h+='<div><h3>'+esc(r.name)+(r.demo?' <span class="chip cat">demo</span>':"")+'</h3>';
+  h+='<div class="meta"><span class="chip cat">'+esc(r.cat)+'</span> '+esc(FORMATS[r.format]||r.format);
+  if(r.baseMl)h+=' · sized for '+r.baseMl+' ml · <b>'+(pct!==null?pct.toFixed(1):"—")+'% dilution</b>';
+  else h+=' · '+recipeTotalDrops(r)+' drops, used neat';
+  h+='</div></div>';
+  h+='<button type="button" class="icon-btn" data-act="fav" data-id="'+esc(r.id)+'" title="Favorite">'+(fav?"♥":"♡")+'</button></div>';
+  h+='<div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap">';
+  h+='<button type="button" class="btn secondary small" data-act="toggle" data-id="'+esc(r.id)+'">View / resize</button>';
+  if(miss.length)h+='<button type="button" class="btn sage small" data-act="shop" data-id="'+esc(r.id)+'">🛒 Add '+miss.length+' missing oil'+(miss.length>1?"s":"")+' to shopping list</button>';
+  else h+='<span class="chip fresh" style="align-self:center">You own every oil ✓</span>';
+  if(r.mine)h+='<button type="button" class="btn secondary small" data-act="edit" data-id="'+esc(r.id)+'">Edit</button><button type="button" class="btn secondary small" data-act="del" data-id="'+esc(r.id)+'">Delete</button>';
+  h+='</div>';
+  h+='<div class="detail">';
+  if(r.baseMl){
+    h+='<label>Make it in a different bottle:</label><select data-scale="'+esc(r.id)+'">';
+    [5,10,15,30,60,100,120,250,500].forEach(function(s){h+='<option value="'+s+'"'+(toMl===s?" selected":"")+'>'+s+' ml</option>';});
+    h+='</select>';
+  }
+  h+='<table><tr><th>Oil</th><th>Drops</th></tr>';
+  lines.forEach(function(L){h+='<tr><td>'+esc(L[0])+'</td><td>'+L[1]+'</td></tr>';});
+  h+='<tr><td><b>Total</b></td><td><b>'+totDrops+'</b></td></tr></table>';
+  if(toMl)h+='<p class="note">Dilution at '+toMl+' ml: <b>'+(pctScaled!==null?pctScaled.toFixed(1):"—")+'%</b>'+(r.format==="roller"||r.format==="spray"?' · carrier/base to add: ≈ '+(toMl-(totDrops/state.settings.dpm)).toFixed(1)+' ml':"")+'</p>';
+  else h+='<p class="note">Used neat (no carrier) — dilution % doesn\'t apply.</p>';
+  if(r.how)h+='<p class="note">'+esc(r.how)+'</p>';
+  if(miss.length)h+='<p class="note">Not in your collection yet: <b>'+esc(miss.join(", "))+'</b></p>';
+  h+='<button type="button" class="btn secondary small" data-act="print" data-id="'+esc(r.id)+'">🖨 Print blend card</button>';
+  h+='</div></div>';
+  return h;
+}
+function renderRecipes(){
+  var q=($("blendSearch").value||"").toLowerCase();
+  var cat=$("blendCat").value;
+  var favOnly=$("favOnly").checked;
+  var list=allRecipes().filter(function(r){
+    if(cat&&cat!=="all"&&r.cat!==cat)return false;
+    if(favOnly&&!isFav(r))return false;
+    if(q){
+      var hay=(r.name+" "+r.cat+" "+r.lines.map(function(L){return L[0];}).join(" ")).toLowerCase();
+      if(hay.indexOf(q)<0)return false;
+    }
+    return true;
+  });
+  $("recipeList").innerHTML=list.length?list.map(recipeCardHTML).join(""):'<p class="empty">No blends match — try a different search, or create your own in My Blends.</p>';
+}
+$("recipeList").addEventListener("click",function(e){
+  var sc=e.target.closest("select[data-scale]");
+  if(sc)return;
+  var b=e.target.closest("button[data-act]");if(!b)return;
+  var id=b.dataset.id,act=b.dataset.act,r=findRecipe(id);
+  if(act==="toggle"){
+    var card=cardEl(id);if(card)card.classList.toggle("open");
+  }else if(act==="fav"&&r){
+    if(r.mine){
+      var mb=state.blends.filter(function(x){return x.id===id;})[0];
+      if(mb){mb.fav=!mb.fav;saveState();}
+    }else{
+      var i=state.favs.indexOf(id);
+      if(i>=0)state.favs.splice(i,1);else state.favs.push(id);
+      saveState();
+    }
+    renderRecipes();
+  }else if(act==="shop"&&r){
+    addMissingToShopping(r);
+  }else if(act==="print"&&r){
+    printRecipe(r);
+  }else if(act==="edit"&&r&&r.mine){
+    loadBlendIntoBuilder(id);
+  }else if(act==="del"&&r&&r.mine){
+    if(confirm("Delete your blend “"+r.name+"”?")){
+      state.blends=state.blends.filter(function(x){return x.id!==id;});
+      saveState();renderRecipes();renderMyBlends();toast("Blend deleted.");
+    }
+  }
+});
+$("recipeList").addEventListener("change",function(e){
+  var sc=e.target.closest("select[data-scale]");if(!sc)return;
+  scaleSel[sc.dataset.scale]=num(sc.value);
+  var card=cardEl(sc.dataset.scale);
+  var wasOpen=card&&card.classList.contains("open");
+  renderRecipes();
+  var c2=cardEl(sc.dataset.scale);
+  if(c2&&wasOpen)c2.classList.add("open");
+});
+$("blendSearch").addEventListener("input",renderRecipes);
+$("blendCat").addEventListener("change",renderRecipes);
+$("favOnly").addEventListener("change",renderRecipes);
+function addMissingToShopping(r){
+  var miss=missingFor(r);
+  if(!miss.length){toast("You already own every oil in this blend ✓");return;}
+  var existing={};
+  state.wishlist.forEach(function(w){existing[w.name.trim().toLowerCase()]=true;});
+  var added=0;
+  miss.forEach(function(name){
+    if(existing[name.trim().toLowerCase()])return;
+    state.wishlist.push({id:uid(),name:name,note:"For “"+r.name+"”",demo:false});
+    added++;
+  });
+  saveState();renderCollection();renderRecipes();
+  toast(added?("Added "+added+" oil"+(added>1?"s":"")+" to your shopping list 🛒"):"Those oils are already on your list.");
+}
+
+/* ---- print ---- */
+function printHTML(title,meta,rows,foot){
+  var h="<h2>"+esc(title)+"</h2><p>"+esc(meta)+"</p><table><tr><th>Oil</th><th>Drops</th></tr>";
+  rows.forEach(function(L){h+="<tr><td>"+esc(L[0])+"</td><td>"+L[1]+"</td></tr>";});
+  h+="</table><p style='font-size:12px'>"+esc(foot)+"</p>";
+  h+="<p style='font-size:11px'>OilCraft — aromatic blend card. Not medical advice. Always dilute &amp; patch test.</p>";
+  $("printArea").innerHTML=h;
+  window.print();
+}
+function printRecipe(r){
+  var toMl=scaleSel[r.id]||r.baseMl;
+  var lines=scaledLines(r,toMl);
+  var tot=lines.reduce(function(a,L){return a+L[1];},0);
+  var meta=FORMATS[r.format]+(toMl?(" · "+toMl+" ml · "+blendPct(tot,toMl,state.settings.dpm).toFixed(1)+"% dilution"):" · used neat");
+  printHTML(r.name,meta,lines,("Total: "+tot+" drops. "+(r.how||"")));
+}
+
+/* ================= BLEND BUILDER ================= */
+var builderLines=[{oil:"",drops:3}];
+var editingId=null;
+function renderBuilder(){
+  var wrap=$("bLines");
+  wrap.innerHTML=builderLines.map(function(L,i){
+    return '<div class="line-row"><input class="oil-in" data-i="'+i+'" list="oilNames" placeholder="Oil name" value="'+esc(L.oil)+'">'
+      +'<input inputmode="decimal" class="drops-in" data-i="'+i+'" type="number" min="0" step="any" placeholder="drops" value="'+(L.drops===""?"":L.drops)+'">'
+      +'<button type="button" class="btn secondary small" data-del="'+i+'">✕</button></div>';
+  }).join("");
+  recalcBuilder();
+}
+function builderContainerMl(){
+  var f=$("bFormat").value;
+  if(f==="roller"||f==="spray")return num($("bContainer").value);
+  return null;
+}
+function recalcBuilder(){
+  var tot=builderLines.reduce(function(a,L){return a+num(L.drops);},0);
+  var ml=builderContainerMl();
+  $("bTotalDrops").textContent=tot;
+  if(ml){
+    var pct=blendPct(tot,ml,state.settings.dpm);
+    $("bPct").textContent=pct.toFixed(1)+"%";
+    $("bCarrier").textContent=Math.max(0,ml-(tot/state.settings.dpm)).toFixed(1);
+    var max=AUDIENCES[$("bAudience").value].max;
+    if(tot>0&&pct>max){
+      $("bWarn").innerHTML='<div class="warnbox">⚠️ '+pct.toFixed(1)+'% is over the '+max+'% recommended max for “'+esc(AUDIENCES[$("bAudience").value].label)+'”. Use fewer drops, a bigger bottle, or choose a stronger-audience setting if this is a short-term adult blend. You can still save it — the warning stays on the blend.</div>';
+    }else if(tot>0){
+      $("bWarn").innerHTML='<div class="okbox">✓ Within the recommended strength for '+esc(AUDIENCES[$("bAudience").value].label)+'.</div>';
+    }else{$("bWarn").innerHTML="";}
+  }else{
+    $("bPct").textContent="neat";
+    $("bCarrier").textContent="—";
+    $("bWarn").innerHTML='<div class="okbox">This type is used neat (no carrier), so there\'s no dilution % — keep total drops sensible and check the Oil Guide flags for hot oils.</div>';
+  }
+}
+$("bLines").addEventListener("input",function(e){
+  var i=e.target.dataset?e.target.dataset.i:null;
+  if(i===null||i===undefined)return;
+  i=+i;
+  if(e.target.classList.contains("oil-in"))builderLines[i].oil=e.target.value;
+  if(e.target.classList.contains("drops-in"))builderLines[i].drops=e.target.value;
+  recalcBuilder();
+});
+$("bLines").addEventListener("click",function(e){
+  var b=e.target.closest("button[data-del]");if(!b)return;
+  builderLines.splice(+b.dataset.del,1);
+  if(!builderLines.length)builderLines=[{oil:"",drops:3}];
+  renderBuilder();
+});
+$("addLineBtn").addEventListener("click",function(){builderLines.push({oil:"",drops:2});renderBuilder();});
+$("bFormat").addEventListener("change",function(){
+  var f=$("bFormat").value;
+  $("bContainerWrap").style.display=(f==="roller"||f==="spray")?"block":"none";
+  recalcBuilder();
+});
+$("bContainer").addEventListener("change",recalcBuilder);
+$("bAudience").addEventListener("change",recalcBuilder);
+$("saveBlendBtn").addEventListener("click",function(){
+  var name=$("bName").value.trim();
+  if(!name){toast("Give your blend a name first.");return;}
+  var lines=builderLines.filter(function(L){return String(L.oil).trim()&&num(L.drops)>0;}).map(function(L){return [String(L.oil).trim(),num(L.drops)];});
+  if(!lines.length){toast("Add at least one oil with drops.");return;}
+  var data={name:name,cat:$("bCat").value,format:$("bFormat").value,baseMl:builderContainerMl(),audience:$("bAudience").value,lines:lines,notes:$("bNotes").value.trim()};
+  if(editingId){
+    var b=state.blends.filter(function(x){return x.id===editingId;})[0];
+    if(b){for(var k in data)b[k]=data[k];}
+    toast("Blend updated ✓");
+  }else{
+    data.id=uid();data.fav=false;data.demo=false;
+    state.blends.push(data);
+    toast("Blend saved ✓");
+  }
+  saveState();
+  cancelEdit();
+  renderRecipes();renderMyBlends();
+});
+function cancelEdit(){
+  editingId=null;
+  $("builderTitle").textContent="Blend Builder";
+  $("saveBlendBtn").textContent="Save blend";
+  $("cancelEditBtn").style.display="none";
+  $("bName").value="";$("bNotes").value="";
+  builderLines=[{oil:"",drops:3}];
+  renderBuilder();
+}
+$("cancelEditBtn").addEventListener("click",cancelEdit);
+function loadBlendIntoBuilder(id){
+  var b=state.blends.filter(function(x){return x.id===id;})[0];
+  if(!b)return;
+  editingId=id;
+  $("builderTitle").textContent="Editing: "+b.name;
+  $("saveBlendBtn").textContent="Save changes";
+  $("cancelEditBtn").style.display="block";
+  $("bName").value=b.name;$("bCat").value=b.cat;$("bFormat").value=b.format;
+  if(b.baseMl)$("bContainer").value=String(b.baseMl);
+  $("bAudience").value=b.audience||"adult";
+  $("bNotes").value=b.notes||"";
+  builderLines=b.lines.map(function(L){return {oil:L[0],drops:L[1]};});
+  if(!builderLines.length)builderLines=[{oil:"",drops:3}];
+  $("bContainerWrap").style.display=(b.format==="roller"||b.format==="spray")?"block":"none";
+  renderBuilder();
+  gotoTab("create");
+  window.scrollTo(0,0);
+}
+function renderMyBlends(){
+  var list=state.blends;
+  $("myBlendList").innerHTML=list.length?list.map(function(b){
+    var r=findRecipe(b.id);
+    return r?recipeCardHTML(r):"";
+  }).join(""):'<p class="empty">No saved blends yet — build your first one above.</p>';
+}
+$("myBlendList").addEventListener("click",function(e){
+  /* reuse library handlers by forwarding the click target dataset */
+  var b=e.target.closest("button[data-act]");if(!b)return;
+  var id=b.dataset.id,act=b.dataset.act,r=findRecipe(id);
+  if(act==="toggle"){var card=$("myBlendList").querySelector('[id="rec-'+id+'"]');if(card)card.classList.toggle("open");}
+  else if(act==="fav"&&r){var mb=state.blends.filter(function(x){return x.id===id;})[0];if(mb){mb.fav=!mb.fav;saveState();renderMyBlends();renderRecipes();}}
+  else if(act==="shop"&&r){addMissingToShopping(r);}
+  else if(act==="print"&&r){printRecipe(r);}
+  else if(act==="edit"){loadBlendIntoBuilder(id);}
+  else if(act==="del"){if(confirm("Delete this blend?")){state.blends=state.blends.filter(function(x){return x.id!==id;});saveState();renderMyBlends();renderRecipes();toast("Blend deleted.");}}
+});
+$("myBlendList").addEventListener("change",function(e){
+  var sc=e.target.closest("select[data-scale]");if(!sc)return;
+  scaleSel[sc.dataset.scale]=num(sc.value);
+  var open=$("myBlendList").querySelector(".recipe.open");
+  var openId=open?open.id:null;
+  renderMyBlends();
+  if(openId){var c=$("myBlendList").querySelector("#"+openId);if(c)c.classList.add("open");}
+});
+
+/* ================= COLLECTION ================= */
+function renderCollection(){
+  var today=todayStr();
+  var totalVal=state.collection.reduce(function(a,c){return a+num(c.cost);},0);
+  var soon=state.collection.filter(function(c){return oilStatus(c,today).code!=="fresh";}).length;
+  $("colStats").innerHTML=
+    '<div class="stat"><div class="num">'+state.collection.length+'</div><div class="lbl">bottles</div></div>'
+    +'<div class="stat"><div class="num">'+money(totalVal)+'</div><div class="lbl">collection value</div></div>'
+    +'<div class="stat"><div class="num">'+soon+'</div><div class="lbl">use-soon / past-best</div></div>'
+    +'<div class="stat"><div class="num">'+state.wishlist.length+'</div><div class="lbl">on shopping list</div></div>';
+  if(!state.collection.length){
+    $("colList").innerHTML='<p class="empty">No bottles logged yet — add your first oil above.</p>';
+  }else{
+    var rows=state.collection.map(function(c){
+      var st=oilStatus(c,today);
+      var chipCls=st.code==="fresh"?"fresh":(st.code==="soon"?"soon":"past");
+      return "<tr><td><b>"+esc(c.name)+"</b>"+(c.brand?"<br><span class='small'>"+esc(c.brand)+"</span>":"")+(c.demo?" <span class='chip cat'>demo</span>":"")+"</td>"
+        +"<td>"+num(c.sizeMl)+" ml</td><td>"+money(c.cost)+"</td><td>"+esc(c.opened)+"</td>"
+        +"<td><span class='chip "+chipCls+"'>"+esc(st.label)+"</span></td>"
+        +"<td><button type='button' class='btn secondary small' data-delcol='"+esc(c.id)+"'>Remove</button></td></tr>";
+    }).join("");
+    $("colList").innerHTML="<table><tr><th>Oil</th><th>Size</th><th>Paid</th><th>Opened</th><th>Shelf life</th><th></th></tr>"+rows+"</table>";
+  }
+  if(!state.wishlist.length){
+    $("wishList").innerHTML='<p class="empty">Your list is empty.</p>';
+  }else{
+    $("wishList").innerHTML=state.wishlist.map(function(w){
+      return '<div class="line-row" style="align-items:center"><div style="flex:3"><b>'+esc(w.name)+'</b>'+(w.note?' <span class="small">— '+esc(w.note)+'</span>':"")+(w.demo?' <span class="chip cat">demo</span>':"")+'</div>'
+        +'<button type="button" class="btn sage small" data-bought="'+esc(w.id)+'">Bought ✓</button>'
+        +'<button type="button" class="btn secondary small" data-delwish="'+esc(w.id)+'">Remove</button></div>';
+    }).join("");
+  }
+  /* demo note */
+  var hasDemo=state.collection.some(function(c){return c.demo;})||state.blends.some(function(b){return b.demo;})||state.wishlist.some(function(w){return w.demo;});
+  $("demoNote").textContent=hasDemo?"Demo data is loaded (marked “demo”) so you can see how everything works. Clear it any time — your own entries are never touched.":"";
+}
+$("cName").addEventListener("change",function(){
+  var ref=REF_BY_NAME[$("cName").value.trim().toLowerCase()];
+  if(ref&&!$("cShelf").value)$("cShelf").value=ref.shelf;
+});
+$("addOilBtn").addEventListener("click",function(){
+  var name=$("cName").value.trim();
+  if(!name){toast("Enter the oil name.");return;}
+  var opened=$("cOpened").value;
+  if(opened&&!validDateStr(opened)){toast("That opened date doesn't look right.");return;}
+  var ref=REF_BY_NAME[name.toLowerCase()];
+  var shelf=num($("cShelf").value)|| (ref?ref.shelf:2);
+  state.collection.push({id:uid(),name:name,brand:$("cBrand").value.trim(),sizeMl:Math.max(0,num($("cSize").value)),cost:Math.max(0,num($("cCost").value)),opened:opened||todayStr(),shelfYears:shelf,demo:false});
+  saveState();renderCollection();renderRecipes();
+  $("cName").value="";$("cBrand").value="";$("cSize").value="";$("cCost").value="";$("cShelf").value="";
+  toast(name+" added to your collection ✓");
+});
+$("colList").addEventListener("click",function(e){
+  var b=e.target.closest("button[data-delcol]");if(!b)return;
+  state.collection=state.collection.filter(function(c){return c.id!==b.dataset.delcol;});
+  saveState();renderCollection();renderRecipes();toast("Bottle removed.");
+});
+$("addWishBtn").addEventListener("click",function(){
+  var name=$("wName").value.trim();
+  if(!name){toast("Enter an oil name.");return;}
+  state.wishlist.push({id:uid(),name:name,note:$("wNote").value.trim(),demo:false});
+  saveState();renderCollection();
+  $("wName").value="";$("wNote").value="";
+  toast(name+" added to your list ✓");
+});
+$("wishList").addEventListener("click",function(e){
+  var bought=e.target.closest("button[data-bought]");
+  var del=e.target.closest("button[data-delwish]");
+  if(bought){
+    state.wishlist=state.wishlist.filter(function(w){return w.id!==bought.dataset.bought;});
+    saveState();renderCollection();toast("Nice — moved off your list. Add the bottle in the form above when it arrives.");
+  }else if(del){
+    state.wishlist=state.wishlist.filter(function(w){return w.id!==del.dataset.delwish;});
+    saveState();renderCollection();
+  }
+});
+$("printShopBtn").addEventListener("click",function(){
+  if(!state.wishlist.length){toast("Your shopping list is empty.");return;}
+  var rows=state.wishlist.map(function(w){return [w.name+(w.note?" ("+w.note+")":""),"☐"];});
+  printHTML("Shopping List","OilCraft wish & shopping list",rows.map(function(r){return [r[0],""];}),"Check off oils as you buy them.");
+});
+
+/* ================= OIL GUIDE ================= */
+function flagHTML(flags){
+  var out="";
+  if(!flags)return out;
+  if(flags.photo)out+='<p class="flagline">☀️ <b>Phototoxic:</b> '+esc(flags.photo)+'</p>';
+  if(flags.hot)out+='<p class="flagline">🔥 <b>Hot oil:</b> '+esc(flags.hot)+'</p>';
+  if(flags.kid)out+='<p class="flagline">🧒 <b>Kids:</b> '+esc(flags.kid)+'</p>';
+  if(flags.pet)out+='<p class="flagline">🐾 <b>Pets:</b> '+esc(flags.pet)+'</p>';
+  if(flags.extra)out+='<p class="flagline">📝 <b>Note:</b> '+esc(flags.extra)+'</p>';
+  return out;
+}
+function renderOils(){
+  var q=($("oilSearch").value||"").toLowerCase();
+  var list=REF_OILS.filter(function(o){
+    if(!q)return true;
+    var hay=(o.name+" "+o.cat+" "+o.scent+" "+o.pairs.join(" ")+" "+JSON.stringify(o.flags)).toLowerCase();
+    return hay.indexOf(q)>=0;
+  });
+  $("oilCards").innerHTML=list.length?list.map(function(o){
+    return '<div class="oilcard"><div style="display:flex;justify-content:space-between;gap:8px"><h3>'+esc(o.name)+'</h3><span class="chip cat">'+esc(o.cat)+'</span></div>'
+      +'<p class="scent">“'+esc(o.scent)+'”</p>'
+      +'<p class="flagline"><b>Pairs well with:</b> '+esc(o.pairs.join(", "))+'</p>'
+      +'<p class="flagline"><b>Typical shelf life:</b> ~'+o.shelf+' years from opening</p>'
+      +flagHTML(o.flags)
+      +'</div>';
+  }).join(""):'<p class="empty">No oils match that search.</p>';
+}
+$("oilSearch").addEventListener("input",renderOils);
+
+/* ================= SETTINGS & BACKUP ================= */
+function renderSettings(){
+  $("sDpm").value=state.settings.dpm;
+  $("sAudience").value=state.settings.audience;
+}
+$("saveSettingsBtn").addEventListener("click",function(){
+  var dpm=num($("sDpm").value);
+  if(!(dpm>=1&&dpm<=100)){toast("Drops per ml should be between 1 and 100.");return;}
+  state.settings.dpm=dpm;
+  state.settings.audience=$("sAudience").value;
+  $("bAudience").value=state.settings.audience;
+  saveState();renderDilution();renderRecipes();renderMyBlends();recalcBuilder();
+  toast("Settings saved ✓");
+});
+function exportJSON(){
+  return JSON.stringify({app:"oilcraft",v:1,exported:todayStr(),settings:state.settings,collection:state.collection,wishlist:state.wishlist,blends:state.blends,favs:state.favs,legal:state.legal||null},null,2);
+}
+$("exportBtn").addEventListener("click",function(){
+  $("ioTitle").textContent="Export backup — copy or save this";
+  $("ioText").value=exportJSON();
+  $("ioModal").classList.add("open");
+  $("ioText").select();
+});
+$("importOpenBtn").addEventListener("click",function(){
+  $("ioTitle").textContent="Import backup";
+  $("ioText").value="";
+  $("ioModal").classList.add("open");
+});
+$("ioCloseBtn").addEventListener("click",function(){$("ioModal").classList.remove("open");});
+function tryImport(text){
+  var parsed;
+  try{parsed=JSON.parse(text);}catch(e){return false;}
+  if(!parsed||parsed.app!=="oilcraft")return false;
+  state=normalizeState(parsed);
+  saveState();
+  return true;
+}
+$("doImportBtn").addEventListener("click",function(){
+  var text=$("ioText").value.trim();
+  var file=$("ioFile").files&&$("ioFile").files[0];
+  if(file){
+    var rd=new FileReader();
+    rd.onload=function(){
+      if(tryImport(String(rd.result||""))){afterImport();}
+      else toast("That file doesn't look like an OilCraft backup — nothing was changed.");
+    };
+    rd.onerror=function(){toast("Couldn't read that file — nothing was changed.");};
+    rd.readAsText(file);
+  }else if(text){
+    if(tryImport(text)){afterImport();}
+    else toast("That doesn't look like an OilCraft backup — nothing was changed.");
+  }else{
+    toast("Paste a backup or choose a backup file first.");
+  }
+});
+function afterImport(){
+  $("ioModal").classList.remove("open");
+  renderAll();
+  toast("Backup imported ✓");
+}
+$("clearDemoBtn").addEventListener("click",function(){
+  state.collection=state.collection.filter(function(c){return !c.demo;});
+  state.blends=state.blends.filter(function(b){return !b.demo;});
+  state.wishlist=state.wishlist.filter(function(w){return !w.demo;});
+  saveState();renderAll();toast("Demo data cleared — your own entries are untouched.");
+});
+$("eraseAllBtn").addEventListener("click",function(){
+  if(!confirm("Erase ALL OilCraft data on this device? This cannot be undone."))return;
+  if(!confirm("Really erase everything — collection, blends, and lists?"))return;
+  var keepSettings=state.settings;
+  state=freshState(false);
+  state.settings=keepSettings;
+  saveState();renderAll();toast("All data erased.");
+});
+
+/* ================= INIT ================= */
+function renderAll(){
+  renderSettings();
+  renderDilution();
+  renderRecipes();
+  renderBuilder();
+  renderMyBlends();
+  renderCollection();
+  renderOils();
+}
+loadState();
+/* datalist + category select */
+$("oilNames").innerHTML=REF_OILS.map(function(o){return '<option value="'+esc(o.name)+'">';}).join("");
+$("blendCat").innerHTML='<option value="all">All categories</option>'+RECIPE_CATS.concat(["Other"]).map(function(c){return '<option value="'+esc(c)+'">'+esc(c)+'</option>';}).join("");
+$("bAudience").value=state.settings.audience;
+if(!$("cOpened").value)$("cOpened").value=todayStr();
+renderAll();
+
+/* exposed for QA/testing */
+window.OC={dilutionCalc:dilutionCalc,blendPct:blendPct,scaleLine:scaleLine,expiryOf:expiryOf,oilStatus:oilStatus,missingFor:missingFor,validDateStr:validDateStr,addMonthsStr:addMonthsStr,REF_OILS:REF_OILS,RECIPES:RECIPES,getState:function(){return state;}};
+</script>
+
+<style id="ww-legal-css">
+.ww-legal-overlay{position:fixed;inset:0;z-index:99990;background:rgba(10,12,14,.72);display:flex;align-items:center;justify-content:center;padding:14px;box-sizing:border-box}
+.ww-legal-card{background:#fff;color:#17202a;border-radius:14px;max-width:560px;width:100%;max-height:92vh;overflow:auto;padding:22px 20px;box-sizing:border-box;box-shadow:0 18px 50px rgba(0,0,0,.35);font-family:inherit}
+.ww-legal-card h2{margin:0 0 4px;font-size:22px}
+.ww-legal-card h3{margin:16px 0 6px}
+.ww-legal-sum{font-size:16px;line-height:1.45;margin:12px 0}
+.ww-legal-sum p{margin:6px 0;font-weight:600}
+.ww-legal-note{font-size:13px;color:#445; margin:10px 0}
+.ww-legal-updated{background:#fff3cd;border:1px solid #e3c565;border-radius:8px;padding:8px 10px;font-size:14px;margin:10px 0}
+.ww-legal-btn{display:block;width:100%;min-height:48px;margin:10px 0;padding:12px 14px;font-size:16px;border-radius:10px;border:1px solid #9db2c3;background:#eef4f8;color:#17202a;cursor:pointer;box-sizing:border-box}
+.ww-legal-agree{background:#17603a;border-color:#17603a;color:#fff;font-weight:700}
+.ww-legal-page{position:fixed;inset:0;z-index:99980;background:#fff;color:#17202a;overflow:auto;padding:18px 16px 40px;box-sizing:border-box}
+.ww-legal-page .ww-legal-inner{max-width:680px;margin:0 auto}
+.ww-legal-page h2{font-size:21px}.ww-legal-page h3{font-size:17px;margin-top:18px}.ww-legal-page p,.ww-legal-page li{font-size:14.5px;line-height:1.55}
+.ww-legal-close{min-height:48px;padding:10px 18px;font-size:15px;border-radius:10px;border:1px solid #9db2c3;background:#eef4f8;cursor:pointer}
+.ww-legal-open-btn{min-height:48px}
+.ww-legal-check{display:flex;gap:10px;align-items:flex-start;margin:12px 0;font-size:15px;line-height:1.4;cursor:pointer;text-align:left}
+.ww-legal-check input{width:22px;height:22px;min-width:22px;margin-top:1px;cursor:pointer}
+.ww-legal-agree[disabled]{opacity:.45;cursor:not-allowed}
+[hidden]{display:none !important}
+</style>
+
+<div id="wwLegalOverlay" class="ww-legal-overlay" hidden>
+  <div class="ww-legal-card" role="dialog" aria-modal="true" aria-labelledby="wwLegalTitle">
+    <h2>OilCraft</h2>
+    <h3 id="wwLegalTitle" style="margin-top:2px">Terms of Use</h3>
+    <div id="wwLegalUpdated" class="ww-legal-updated" hidden>Our terms were updated (v1.0).</div>
+    <div class="ww-legal-sum">
+      <p>Your data stays on your device.</p>
+      <p>Estimates are aids, not guarantees.</p>
+      <p>You're responsible for checking outputs before you rely on them.</p>
+    </div>
+    <p class="ww-legal-note">The full Terms and Disclaimer are one tap away, now and any time in Settings → Legal.</p>
+    <button type="button" class="ww-legal-btn" id="wwLegalReadTerms">Read the full Terms</button>
+    
+    <label class="ww-legal-check" for="wwLegalCheck"><input type="checkbox" id="wwLegalCheck"><span>I have read and I agree to the Terms of Use</span></label>
+    <button type="button" class="ww-legal-btn ww-legal-agree" id="wwLegalAgree" disabled>I Agree</button>
+  </div>
+</div>
+<div id="wwLegalReader" class="ww-legal-page" hidden>
+  <div class="ww-legal-inner">
+    <button type="button" class="ww-legal-close" id="wwLegalReaderBack">← Back</button>
+    <div id="wwLegalReaderBody"></div>
+  </div>
+</div>
+<div id="wwLegalPage" class="ww-legal-page" hidden>
+  <div class="ww-legal-inner">
+    <button type="button" class="ww-legal-close" id="wwLegalPageClose">← Back</button>
+    <h2>Legal</h2>
+    <h3>Terms of Use</h3>
+    <div id="wwLegalTermsText"><h2>Terms of Use — White Wolf Digital Apps</h2>
+<p><strong>Version 1.0</strong></p>
+<p><strong>Seller: White Wolf Tree Service LLC, selling digital products under the name &quot;White Wolf Digital&quot;</strong></p>
+<p><strong>Contact: whitewolfoklahoma@gmail.com</strong></p>
+<hr>
+<h3>1. What you&#x27;re buying</h3>
+<p>Our apps (including ForgeFit AI, ForgeKitchen, TreeBid Pro, SnowBid,</p>
+<p>WashPrice Pro, RoofSquares, JobProfit Tracker, PastureLedger, and the other</p>
+<p>titles sold under White Wolf Digital) are single-file software tools. When</p>
+<p>you buy one, you are buying a <strong>license to use the file</strong>, not ownership of</p>
+<p>the software itself.</p>
+<h3>2. Your license</h3>
+<ul>
+<li>You may use the app for your own personal or business work.</li>
+<li>You may open it on your own devices (phone, tablet, computer) and move your</li>
+</ul>
+<p>  own data between them using the app&#x27;s built-in backup/export tools.</p>
+<ul>
+<li>You may <strong>not</strong> resell, redistribute, give away, upload, or share the app</li>
+</ul>
+<p>  file (or a copy of it) with anyone else — including posting it online,</p>
+<p>  bundling it with other products, or selling access to it.</p>
+<ul>
+<li>You may <strong>not</strong> claim the app as your own work, remove its branding or</li>
+</ul>
+<p>  notices, or use it to build a competing product for resale.</p>
+<ul>
+<li>One purchase = one buyer. A business purchase covers the buyer and their</li>
+</ul>
+<p>  own employees using it for that business&#x27;s work; it does not cover other</p>
+<p>  businesses.</p>
+<h3>3. Your data stays yours — and stays on your device</h3>
+<ul>
+<li>The current versions of our apps run <strong>entirely on your device</strong>. They have</li>
+</ul>
+<p>  no accounts, no sign-in, no analytics, and they collect, transmit, and store</p>
+<p>  <strong>none</strong> of your information on any server. We never see your data.</p>
+<ul>
+<li>Your records are stored in your browser/app storage on your device. **You</li>
+</ul>
+<p>  are responsible for backing them up** using the app&#x27;s export tools. If you</p>
+<p>  clear your browser data, lose your device, or uninstall the app, your</p>
+<p>  records may be permanently lost, and we cannot recover them — we never had</p>
+<p>  a copy.</p>
+<ul>
+<li>Files you export (backups, quotes, PDFs) are under your control. Where you</li>
+</ul>
+<p>  store or send them is up to you.</p>
+<h3>4. Estimates are tools, not guarantees</h3>
+<p>Every number our apps produce — bids, prices, costs, calorie targets,</p>
+<p>projections, schedules, totals — is an **estimate generated from the</p>
+<p>information you enter and the settings you choose**. Outputs are aids for</p>
+<p>your own judgment, not guarantees of price, profit, outcome, or result. You</p>
+<p>are responsible for checking any output before relying on it (see also the</p>
+<p>disclaimer that applies to your app: Health Disclaimer for fitness/nutrition</p>
+<p>apps, Estimator Disclaimer for contractor tools). If an input is wrong, the</p>
+<p>output will be wrong.</p>
+<h3>5. Acceptable use</h3>
+<p>Don&#x27;t use the apps to break the law, infringe anyone&#x27;s rights, or</p>
+<p>misrepresent quotes, invoices, or records to your own customers. For the</p>
+<p>fitness apps, the guardrails in the app (healthy-rate limits, calorie floor)</p>
+<p>are part of the product — don&#x27;t treat the app as a way around them.</p>
+<h3>6. Provided &quot;as is&quot;</h3>
+<p>The apps are provided **&quot;as is&quot; and &quot;as available,&quot; without warranties of</p>
+<p>any kind**, express or implied — including merchantability, fitness for a</p>
+<p>particular purpose, accuracy of calculations, and uninterrupted or</p>
+<p>error-free operation — to the maximum extent allowed by law. Software has</p>
+<p>bugs; browsers change; we work to fix problems but do not promise any app is</p>
+<p>error-free or will work on every device or browser forever.</p>
+<h3>7. Limitation of liability</h3>
+<p>To the maximum extent allowed by law:</p>
+<ul>
+<li>We are **not liable for indirect, incidental, special, or consequential</li>
+</ul>
+<p>  damages** — including lost profits, lost or mispriced jobs, lost data, or</p>
+<p>  business interruption — arising from use of the apps.</p>
+<ul>
+<li>Our total liability for any claim connected to an app is limited to the</li>
+</ul>
+<p>  <strong>amount you paid for that app</strong>.</p>
+<ul>
+<li>Nothing in these terms limits liability that cannot legally be limited.</li>
+</ul>
+<h3>8. Refunds</h3>
+<p>Refunds are handled **by the storefront you bought from, under that</p>
+<p>storefront&#x27;s policy** — Gumroad&#x27;s refund policy for Gumroad purchases, and</p>
+<p>Google Play&#x27;s refund policy for Play purchases. These terms do not add to,</p>
+<p>replace, or override the storefront&#x27;s refund rules. If a file is defective</p>
+<p>and won&#x27;t open, contact us at whitewolfoklahoma@gmail.com and we&#x27;ll fix or</p>
+<p>replace the file.</p>
+<h3>9. Updates and changes to these terms</h3>
+<ul>
+<li>We may release updated versions of an app. Updates may add, change, or</li>
+</ul>
+<p>  remove features.</p>
+<ul>
+<li>We may update these terms. The version you agreed to is recorded in the</li>
+</ul>
+<p>  app (version number and date) at first-run acceptance. If terms change,</p>
+<p>  the app may ask you to accept the new version once on next open. Updated</p>
+<p>  terms apply going forward, not retroactively.</p>
+<ul>
+<li>If you don&#x27;t agree to an updated version of the terms, stop using the app.</li>
+</ul>
+<h3>10. Governing law</h3>
+<p>These terms are governed by the laws of the <strong>State of Oklahoma</strong>, USA.</p>
+<p>(Attorney to confirm governing law and venue before publication.)</p>
+<h3>11. Contact</h3>
+<p>White Wolf Tree Service LLC (White Wolf Digital) —</p>
+<p>whitewolfoklahoma@gmail.com.</p>
+<hr>
+<h3>CONNECTED FEATURES — takes effect only when these features ship</h3>
+<p>*The sections below apply only to future connected features (device sync via</p>
+<p>Health Connect, AI voice logging, and the AI Goal Preview in ForgeFit). They</p>
+<p>do not apply to the current offline versions, which never transmit data.*</p>
+<ul>
+<li><strong>Opt-in only.</strong> Connected features are off by default. Each one asks for</li>
+</ul>
+<p>  your separate, explicit consent — on its own consent screen, in plain</p>
+<p>  language — before anything leaves your device. Declining never disables</p>
+<p>  the app&#x27;s offline features.</p>
+<ul>
+<li><strong>What gets sent.</strong> Only what the consent screen names, only when you use</li>
+</ul>
+<p>  the feature: for example, a meal description (text, or audio only if cloud</p>
+<p>  transcription is on) for AI voice logging, or the single photo you choose</p>
+<p>  for an AI Goal Preview.</p>
+<ul>
+<li><strong>No retention by us.</strong> Our relay service passes your request to the named</li>
+</ul>
+<p>  AI provider and keeps nothing — no copies of your photos, audio,</p>
+<p>  transcripts, or entries are stored on our servers. Provider handling is</p>
+<p>  described on the consent screen and in the Privacy Policy.</p>
+<ul>
+<li><strong>Health data stays on the device.</strong> Device sync (Health Connect) reads</li>
+</ul>
+<p>  your health data on your phone and stores it in the app on your phone. It</p>
+<p>  is not uploaded to us.</p>
+<ul>
+<li><strong>Allowances.</strong> Some connected features run on third-party AI services we</li>
+</ul>
+<p>  pay for per use, so they may include a monthly allowance described in the</p>
+<p>  app (for example, a set number of AI previews or voice entries per month),</p>
+<p>  with optional additional credits. Allowances and pricing will be shown in</p>
+<p>  the app before you use the feature; they are not a subscription unless the</p>
+<p>  app says so in plain words.</p>
+<ul>
+<li><strong>Permissions.</strong> Connected features may request device permissions (such</li>
+</ul>
+<p>  as Health Connect access or the microphone) at the moment you first use</p>
+<p>  them. You can revoke permissions any time in your device settings; the</p>
+<p>  related feature will simply stop working.</p></div>
+    
+    <h3>Privacy</h3>
+    <p>This app has no accounts and collects no data. Everything you enter is stored only on this device, in this browser's local storage. Nothing is uploaded, tracked, or shared. Exported backup files are under your control — where you store or send them is up to you. If you clear your browser data, lose your device, or uninstall the app, your records may be permanently lost, so keep backups using the app's export tools.</p>
+    <p id="wwLegalAcceptLine"></p>
+    <p><strong>Sold by White Wolf Tree Service LLC (White Wolf Digital) — whitewolfoklahoma@gmail.com</strong></p>
+  </div>
+</div>
+
+<script>
+/* White Wolf Digital — in-app legal pattern v1 (Terms acceptance + Settings > Legal) */
+const TERMS_VERSION = "1.0";
+(function(){
+  var WW_KEY = "oilcraft_v1";
+  var WW_SAVE = "saveState";
+  var WW_DISC = false;
+  function wwRaw(){ try{ var r = localStorage.getItem(WW_KEY); return r ? JSON.parse(r) : null; }catch(e){ return null; } }
+  function wwStateObj(){ try{ if(typeof state !== "undefined" && state && typeof state === "object") return state; }catch(e){} return null; }
+  function wwGetLegal(){
+    var st = wwStateObj(); if(st && st.legal && typeof st.legal === "object") return st.legal;
+    var r = wwRaw(); if(r && r.legal && typeof r.legal === "object") return r.legal;
+    return null;
+  }
+  function wwPersist(rec){
+    var st = wwStateObj();
+    if(st){ st.legal = rec;
+      try{ if(WW_SAVE === "saveState" && typeof saveState === "function"){ saveState(); return; } }catch(e){}
+      try{ if(WW_SAVE === "save" && typeof save === "function"){ save(); return; } }catch(e){}
+    }
+    try{ var r = wwRaw() || {}; r.legal = rec; localStorage.setItem(WW_KEY, JSON.stringify(r)); }catch(e){}
+  }
+  function wwAcceptLine(){
+    var el = document.getElementById("wwLegalAcceptLine"); if(!el) return;
+    var rec = wwGetLegal();
+    if(rec && rec.acceptedDate) el.textContent = "You agreed to Terms v" + (rec.termsVersion || TERMS_VERSION) + " on " + rec.acceptedDate + ".";
+    else el.textContent = "No acceptance recorded yet on this device.";
+  }
+  function wwShowReader(which){
+    var body = document.getElementById("wwLegalReaderBody");
+    var src = document.getElementById(which === "disc" ? "wwLegalDiscText" : "wwLegalTermsText");
+    if(!body || !src) return;
+    body.innerHTML = src.innerHTML;
+    document.getElementById("wwLegalReader").hidden = false;
+  }
+  function wwOpenLegal(){ wwAcceptLine(); document.getElementById("wwLegalPage").hidden = false; }
+  window.__wwOpenLegal = wwOpenLegal;
+  document.addEventListener("click", function(ev){
+    var t = ev.target && ev.target.closest ? ev.target.closest("[data-ww-legal]") : null;
+    if(t){ ev.preventDefault(); wwOpenLegal(); }
+  });
+  var agreeBtn = document.getElementById("wwLegalAgree");
+  var wwCheck = document.getElementById("wwLegalCheck");
+  function wwGate(){ if(agreeBtn && wwCheck) agreeBtn.disabled = !wwCheck.checked; }
+  if(wwCheck) wwCheck.addEventListener("change", wwGate);
+  wwGate();
+  if(agreeBtn) agreeBtn.addEventListener("click", function(){
+    if(wwCheck && !wwCheck.checked){ wwGate(); return; }
+    var rec = { termsVersion: TERMS_VERSION, acceptedDate: new Date().toISOString().slice(0,10), disclaimerShown: WW_DISC };
+    wwPersist(rec);
+    document.getElementById("wwLegalOverlay").hidden = true;
+    wwAcceptLine();
+  });
+  var rt = document.getElementById("wwLegalReadTerms");
+  if(rt) rt.addEventListener("click", function(){ wwShowReader("terms"); });
+  var rd = document.getElementById("wwLegalReadDisc");
+  if(rd) rd.addEventListener("click", function(){ wwShowReader("disc"); });
+  var rb = document.getElementById("wwLegalReaderBack");
+  if(rb) rb.addEventListener("click", function(){ document.getElementById("wwLegalReader").hidden = true; });
+  var pc = document.getElementById("wwLegalPageClose");
+  if(pc) pc.addEventListener("click", function(){ document.getElementById("wwLegalPage").hidden = true; });
+  var rec = wwGetLegal();
+  if(rec && rec.termsVersion === TERMS_VERSION){
+    var st2 = wwStateObj();
+    if(st2 && !st2.legal) wwPersist(rec);
+    wwAcceptLine();
+  } else {
+    if(rec && rec.termsVersion){ var u = document.getElementById("wwLegalUpdated"); if(u) u.hidden = false; }
+    document.getElementById("wwLegalOverlay").hidden = false;
+  }
+})();
+</script>
+
+</body>
+</html>
